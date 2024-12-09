@@ -45,8 +45,7 @@ void _sync_time() {
     return;
   }
 
-  Serial.println("Connected to WiFi!");
-  Serial.print("IP Address: ");
+  Serial.print("Connected to WiFi! IP Address: ");
   Serial.println(WiFi.localIP());
 
   configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
