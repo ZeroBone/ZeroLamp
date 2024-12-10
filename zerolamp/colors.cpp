@@ -1,4 +1,5 @@
-#include "utils.h"
+#include "colors.h"
+
 
 bool parseColorSpec(String colorSpec, CRGB &result) {
   colorSpec.trim();

@@ -27,16 +27,4 @@ void loop() {
   wlan_tick();
   modes_tick();
 
-  /*EVERY_N_MILLISECONDS(500) {
-
-    struct tm* cur_time = get_current_time();
-    if (cur_time == nullptr) {
-      Serial.println("Time: unknown");
-    }
-    else {
-      Serial.println(cur_time, "Time: %A, %B %d %Y %H:%M:%S");
-    }
-
-  }*/
-
 }

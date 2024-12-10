@@ -1,4 +1,5 @@
 #include "matrix.h"
+#include <cassert>
 
 CRGB leds[NUM_LEDS];
 
@@ -20,9 +21,8 @@ inline int ledId(int y, int x) {
 }
 
 void matrix_setLedColor(int y, int x, CRGB color) {
-  leds[ledId(y, x)] = color;
-}
-
-void matrix_render() {
-  FastLED.show();
+  assert(y >= 0);
+  assert(y < MATRIX_HEIGHT);
+  assert(x >= 0);
+  leds[ledId(y, x % MATRIX_WIDTH)] = color;
 }
