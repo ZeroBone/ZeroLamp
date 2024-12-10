@@ -6,6 +6,7 @@
 void setup() {
 
   Serial.begin(115200);
+
   Serial.println("Initializing ZeroLamp...");
 
   randomSeed((analogRead(0) + analogRead(1)) ^ 0xdeadbeef);
