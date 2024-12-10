@@ -30,7 +30,7 @@ public:
     struct tm* cur_time = get_current_time();
 
     if (cur_time == nullptr) {
-      draw_character(offset_x, offset_y, '?', offset_x, offset_x + viewport_width - 1, CRGB::Red);
+      draw_character(offset_x, offset_y + 4, '?', offset_x, offset_x + viewport_width - 1, CRGB::Red);
       return;
     }
 
