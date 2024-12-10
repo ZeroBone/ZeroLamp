@@ -1,7 +1,9 @@
-#include <FastLED.h>
 #include "matrix.h"
 #include "wlan.h"
 #include "bluetooth.h"
+#include "modes.h"
+
+#include <FastLED.h>
 
 void setup() {
 
@@ -14,6 +16,7 @@ void setup() {
   bluetooth_init();
   matrix_init();
   wlan_init();
+  modes_init();
   
   Serial.println("ZeroLamp successfully initialized.");
 }
@@ -22,16 +25,9 @@ void loop() {
 
   bluetooth_tick();
   wlan_tick();
+  modes_tick();
 
-  EVERY_N_MILLISECONDS(500) {
-
-    for (int x = 0; x < MATRIX_WIDTH; x++) {
-      for (int y = 0; y < MATRIX_HEIGHT; y++) {
-        matrix_setLedColor(y, x, CHSV(random8(), 0xff, 0xff));
-      }
-    }
-
-    matrix_render();
+  /*EVERY_N_MILLISECONDS(500) {
 
     struct tm* cur_time = get_current_time();
     if (cur_time == nullptr) {
@@ -41,6 +37,6 @@ void loop() {
       Serial.println(cur_time, "Time: %A, %B %d %Y %H:%M:%S");
     }
 
-  }
+  }*/
 
 }
