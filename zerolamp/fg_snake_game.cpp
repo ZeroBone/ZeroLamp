@@ -193,7 +193,9 @@ void SnakeGameFG::spawn_food() {
 
 void SnakeGameFG::render_frame(int offset_x, int offset_y, int viewport_width, int viewport_height) {
 
-  move_snake();
+  if (bluetooth_device_connected()) {
+    move_snake();
+  }
 
   // draw food
   if (food.x < viewport_width && food.y < viewport_height) {

@@ -49,3 +49,7 @@ void bluetooth_tick() {
 BluetoothSerial* bluetooth_serial() {
   return &SerialBT;
 }
+
+bool bluetooth_device_connected() {
+  return SerialBT.hasClient();
+}
