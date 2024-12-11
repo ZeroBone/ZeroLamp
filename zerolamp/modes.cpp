@@ -1,10 +1,8 @@
 #include "modes.h"
 #include <Arduino.h>
 #include "mode.h"
-// #include "queue.h"
 #include "matrix.h"
-#include "bg_random.h"
-#include "bg_snowfall.h"
+#include "bg_fire.h"
 #include "fg_clock.h"
 
 // VectorQueue<LampMode*, MODES_QUEUE_SIZE> modes_queue;
@@ -19,7 +17,7 @@ int current_mode_fg_offset_x = 12;
 int current_mode_fg_viewport_width = 6;
 
 void modes_init() {
-  current_mode_bg = new SnowfallBG();
+  current_mode_bg = new FireBG();
   current_mode_bg->enter(10, MATRIX_HEIGHT);
   current_mode_fg = new ClockFG();
   current_mode_fg->enter(6, MATRIX_HEIGHT);

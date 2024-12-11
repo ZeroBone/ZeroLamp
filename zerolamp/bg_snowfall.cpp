@@ -56,7 +56,7 @@ void Snowflake::draw(int offset_x, int offset_y, int viewport_width, int viewpor
 
 void SnowfallBG::enter(int logical_width, int logical_height) {
 
-  set_render_interval(32);
+  set_render_interval(33);
 
   this->logical_width = logical_width;
   this->logical_height = logical_height;
