@@ -26,3 +26,7 @@ void matrix_setLedColor(int y, int x, CRGB color) {
   assert(x >= 0);
   leds[ledId(y, x % MATRIX_WIDTH)] = color;
 }
+
+void matrix_clearLed(int y, int x) {
+  matrix_setLedColor(y, x, CRGB::Black);
+}

@@ -1,7 +1,9 @@
 #include "bg_random.h"
 #include "matrix.h"
 
-void RandomBG::enter(int logical_width, int logical_height) {}
+void RandomBG::enter(int logical_width, int logical_height) {
+  set_render_interval(250);
+}
 
 void RandomBG::leave() {}
 

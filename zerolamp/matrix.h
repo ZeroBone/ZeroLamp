@@ -12,5 +12,6 @@ const int MATRIX_HEIGHT = 16;
 
 void matrix_init();
 void matrix_setLedColor(int y, int x, CRGB color);
+void matrix_clearLed(int y, int x);
 
 #endif

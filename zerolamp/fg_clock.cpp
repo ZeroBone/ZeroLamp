@@ -7,6 +7,8 @@
 void ClockFG::enter(int logical_width, int logical_height) {
   this->logical_width = logical_width;
   this->logical_height = logical_height;
+
+  set_render_interval(500);
 }
 
 void ClockFG::leave() {}
