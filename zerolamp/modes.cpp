@@ -4,6 +4,7 @@
 // #include "queue.h"
 #include "matrix.h"
 #include "bg_random.h"
+#include "bg_snowfall.h"
 #include "fg_clock.h"
 
 // VectorQueue<LampMode*, MODES_QUEUE_SIZE> modes_queue;
@@ -12,7 +13,7 @@ LampMode* current_mode_bg;
 LampMode* current_mode_fg = nullptr;
 
 void modes_init() {
-  current_mode_bg = new RandomBG();
+  current_mode_bg = new SnowfallBG();
   current_mode_bg->enter(10, MATRIX_HEIGHT);
   current_mode_fg = new ClockFG();
   current_mode_fg->enter(6, MATRIX_HEIGHT);
@@ -24,7 +25,7 @@ void modes_tick() {
 
   unsigned long currentMillis = millis();
 
-  if (currentMillis - lastFrameRenderTime < 250) {
+  if (currentMillis - lastFrameRenderTime < 32) {
     // no need to render frame
     return;
   }
