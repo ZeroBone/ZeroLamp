@@ -18,3 +18,7 @@ void FillBG::render_frame(int offset_x, int offset_y, int viewport_width, int vi
     }
   }
 }
+
+CommandHandleResult FillBG::handle_command(String command) {
+  return CommandHandleResult::NOT_HANDLED;
+}

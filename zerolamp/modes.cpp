@@ -1,5 +1,4 @@
 #include "modes.h"
-#include <Arduino.h>
 #include "mode.h"
 #include "matrix.h"
 #include "bg_fire.h"
@@ -21,6 +20,26 @@ void modes_init() {
   current_mode_bg->enter(10, MATRIX_HEIGHT);
   current_mode_fg = new SnakeGameFG();
   current_mode_fg->enter(6, MATRIX_HEIGHT);
+}
+
+void modes_handle_command(String command) {
+
+  CommandHandleResult hr;
+
+  if (current_mode_fg != nullptr) {
+    hr = current_mode_fg->handle_command(command);
+    if (hr == CommandHandleResult::HANDLED) {
+      return;
+    }
+  }
+
+  hr = current_mode_bg->handle_command(command);
+  if (hr == CommandHandleResult::HANDLED) {
+    return;
+  }
+
+  // TODO: tell the user that they sent an unknown command
+
 }
 
 void modes_tick() {

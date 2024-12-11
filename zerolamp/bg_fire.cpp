@@ -126,3 +126,7 @@ void FireBG::render_frame(int offset_x, int offset_y, int viewport_width, int vi
   }
 
 }
+
+CommandHandleResult FireBG::handle_command(String command) {
+  return CommandHandleResult::NOT_HANDLED;
+}

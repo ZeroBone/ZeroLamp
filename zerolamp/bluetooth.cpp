@@ -1,5 +1,6 @@
 #include "bluetooth.h"
-#include <BluetoothSerial.h>
+#include <Arduino.h>
+#include "modes.h"
 
 #if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
 #error Bluetooth is not enabled!
@@ -16,11 +17,11 @@ void bluetooth_init() {
 
 }
 
-String bluetoothMessage = "";
+String bt_message = "";
 
 void bluetooth_tick() {
 
-  bool reachedEndOfMessage = false;
+  bool reached_end = false;
 
   while (SerialBT.available()) {
 
@@ -31,16 +32,20 @@ void bluetooth_tick() {
     }
 
     if (c == '\n') {
-      reachedEndOfMessage = true;
+      reached_end = true;
       break;
     }
     
-    bluetoothMessage += String(c);
+    bt_message += String(c);
     
   }
 
-  if (reachedEndOfMessage && !bluetoothMessage.isEmpty()) {
-    SerialBT.println(bluetoothMessage);
-    bluetoothMessage = "";
+  if (reached_end && !bt_message.isEmpty()) {
+    modes_handle_command(bt_message);
+    bt_message = "";
   }
+}
+
+BluetoothSerial* bluetooth_serial() {
+  return &SerialBT;
 }

@@ -1,6 +1,13 @@
 #ifndef MODE_H
 #define MODE_H
 
+#include <Arduino.h>
+
+enum class CommandHandleResult {
+  HANDLED,
+  NOT_HANDLED
+};
+
 class LampMode {
 
 private:
@@ -14,6 +21,8 @@ public:
   virtual void leave() = 0;
 
   virtual void render_frame(int offset_x, int offset_y, int viewport_width, int viewport_height) = 0;
+
+  virtual CommandHandleResult handle_command(String command) = 0;
 
   virtual ~LampMode() {}
 

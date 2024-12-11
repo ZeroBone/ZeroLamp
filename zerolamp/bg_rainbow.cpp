@@ -21,3 +21,7 @@ void RainbowBG::render_frame(int offset_x, int offset_y, int viewport_width, int
 
   hue++;
 }
+
+CommandHandleResult RainbowBG::handle_command(String command) {
+  return CommandHandleResult::NOT_HANDLED;
+}

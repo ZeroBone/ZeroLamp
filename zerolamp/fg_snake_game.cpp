@@ -1,6 +1,7 @@
 #include "fg_snake_game.h"
 #include "matrix.h"
 #include <cassert>
+#include "bluetooth.h"
 
 SnakeDirection get_random_snake_direction() {
 
@@ -216,4 +217,53 @@ void SnakeGameFG::render_frame(int offset_x, int offset_y, int viewport_width, i
 
   }
 
+}
+
+CommandHandleResult SnakeGameFG::handle_command(String command) {
+
+  if (command.equalsIgnoreCase("w")) {
+    if (movement_direction != SnakeDirection::DOWN) {
+      bluetooth_serial()->println("Snake moves up.");
+      movement_direction = SnakeDirection::UP;
+    }
+    else {
+      bluetooth_serial()->println("Can't move up.");
+    }
+    return CommandHandleResult::HANDLED;
+  }
+
+  if (command.equalsIgnoreCase("s")) {
+    if (movement_direction != SnakeDirection::UP) {
+      bluetooth_serial()->println("Snake moves down.");
+      movement_direction = SnakeDirection::DOWN;
+    }
+    else {
+      bluetooth_serial()->println("Can't move down.");
+    }
+    return CommandHandleResult::HANDLED;
+  }
+
+  if (command.equalsIgnoreCase("a")) {
+    if (movement_direction != SnakeDirection::RIGHT) {
+      bluetooth_serial()->println("Snake moves left.");
+      movement_direction = SnakeDirection::LEFT;
+    }
+    else {
+      bluetooth_serial()->println("Can't move left.");
+    }
+    return CommandHandleResult::HANDLED;
+  }
+
+  if (command.equalsIgnoreCase("d")) {
+    if (movement_direction != SnakeDirection::LEFT) {
+      bluetooth_serial()->println("Snake moves right.");
+      movement_direction = SnakeDirection::RIGHT;
+    }
+    else {
+      bluetooth_serial()->println("Can't move right.");
+    }
+    return CommandHandleResult::HANDLED;
+  }
+
+  return CommandHandleResult::NOT_HANDLED;
 }

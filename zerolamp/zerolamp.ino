@@ -22,9 +22,7 @@ void setup() {
 }
 
 void loop() {
-
   bluetooth_tick();
   wlan_tick();
   modes_tick();
-
 }

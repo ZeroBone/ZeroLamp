@@ -13,7 +13,8 @@ public:
   void enter(int logical_width, int logical_height);
   void leave();
   void render_frame(int offset_x, int offset_y, int viewport_width, int viewport_height);
-  
+  CommandHandleResult handle_command(String command);
+
 };
 
 #endif

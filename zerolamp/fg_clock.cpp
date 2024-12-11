@@ -42,3 +42,7 @@ void ClockFG::render_frame(int offset_x, int offset_y, int viewport_width, int v
   draw_string_horizontally(offset_x, 9, minuteStr, offset_x, offset_x + viewport_width - 1, CRGB::Blue, 0);
 
 }
+
+CommandHandleResult ClockFG::handle_command(String command) {
+  return CommandHandleResult::NOT_HANDLED;
+}
