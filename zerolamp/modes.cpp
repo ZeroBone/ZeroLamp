@@ -2,8 +2,8 @@
 #include <Arduino.h>
 #include "mode.h"
 #include "matrix.h"
-#include "fg_clock.h"
 #include "bg_fire.h"
+#include "fg_snake_game.h"
 
 // VectorQueue<LampMode*, MODES_QUEUE_SIZE> modes_queue;
 
@@ -19,7 +19,7 @@ int current_mode_fg_viewport_width = 6;
 void modes_init() {
   current_mode_bg = new FireBG();
   current_mode_bg->enter(10, MATRIX_HEIGHT);
-  current_mode_fg = new ClockFG();
+  current_mode_fg = new SnakeGameFG();
   current_mode_fg->enter(6, MATRIX_HEIGHT);
 }
 
