@@ -1,5 +1,5 @@
-#ifndef ZB_FG_SNAKE_H
-#define ZB_FG_SNAKE_H
+#ifndef ZB_MODE_SNAKE_H
+#define ZB_MODE_SNAKE_H
 
 #include <FastLED.h>
 #include <Arduino.h>
@@ -20,7 +20,7 @@ struct SnakePoint {
   SnakePoint() {}
 };
 
-class SnakeGameFG : public LampMode {
+class SnakeMode : public LampMode {
 
 private:
   int logical_width;

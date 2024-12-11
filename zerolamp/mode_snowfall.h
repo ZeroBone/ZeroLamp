@@ -1,5 +1,5 @@
-#ifndef ZB_BG_SNOWFALL_H
-#define ZB_BG_SNOWFALL_H
+#ifndef ZB_MODE_SNOWFALL_H
+#define ZB_MODE_SNOWFALL_H
 
 #include <Arduino.h>
 #include "mode.h"
@@ -18,7 +18,7 @@ struct Snowflake {
   void draw(int offset_x, int offset_y, int viewport_width, int viewport_height);
 };
 
-class SnowfallBG : public LampMode {
+class SnowfallMode : public LampMode {
 
 private:
   int logical_width;

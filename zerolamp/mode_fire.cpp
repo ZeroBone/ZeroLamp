@@ -1,9 +1,9 @@
-#include "bg_fire.h"
+#include "mode_fire.h"
 #include "matrix.h"
 
 #include <cassert>
 
-int FireBG::get_temperature(int x, int y) {
+int FireMode::get_temperature(int x, int y) {
 
   if (y < 0) {
     y = 0;
@@ -23,7 +23,7 @@ int FireBG::get_temperature(int x, int y) {
   return temperature[y * logical_width + x];
 }
 
-void FireBG::set_temperature(int x, int y, int new_temperature) {
+void FireMode::set_temperature(int x, int y, int new_temperature) {
   assert(x >= 0);
   assert(y >= 0);
   assert(x < logical_width);
@@ -40,7 +40,7 @@ void FireBG::set_temperature(int x, int y, int new_temperature) {
   temperature[y * logical_width + x] = (uint8_t)new_temperature;
 }
 
-void FireBG::enter(int logical_width, int logical_height) {
+void FireMode::enter(int logical_width, int logical_height) {
 
   assert(logical_width >= 1);
   assert(logical_height >= 1);
@@ -53,7 +53,7 @@ void FireBG::enter(int logical_width, int logical_height) {
   set_render_interval(33);
 }
 
-void FireBG::leave() {
+void FireMode::leave() {
   if (temperature != nullptr) {
     delete[] temperature;
   }
@@ -75,7 +75,7 @@ CRGB visualize_temperature(uint8_t temperature) {
   return CRGB(0xff, 0xff, (t192 - 127) * 4); // rises from yellow to white
 }
 
-void FireBG::render_frame(int offset_x, int offset_y, int viewport_width, int viewport_height) {
+void FireMode::render_frame(int offset_x, int offset_y, int viewport_width, int viewport_height) {
 
   assert(viewport_width <= logical_width);
   assert(viewport_height <= logical_height);
@@ -127,6 +127,6 @@ void FireBG::render_frame(int offset_x, int offset_y, int viewport_width, int vi
 
 }
 
-CommandHandleResult FireBG::handle_command(String command) {
+CommandHandleResult FireMode::handle_command(String command) {
   return CommandHandleResult::NOT_HANDLED;
 }

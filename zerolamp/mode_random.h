@@ -1,9 +1,9 @@
-#ifndef ZB_BG_RANDOM_H
-#define ZB_BG_RANDOM_H
+#ifndef ZB_MODE_RANDOM_H
+#define ZB_MODE_RANDOM_H
 
 #include "mode.h"
 
-class RandomBG : public LampMode {
+class RandomMode : public LampMode {
 
 public:
   void enter(int logical_width, int logical_height);

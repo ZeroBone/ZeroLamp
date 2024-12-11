@@ -1,4 +1,4 @@
-#include "bg_snowfall.h"
+#include "mode_snowfall.h"
 #include "matrix.h"
 
 #include <FastLED.h>
@@ -54,7 +54,7 @@ void Snowflake::draw(int offset_x, int offset_y, int viewport_width, int viewpor
 
 }
 
-void SnowfallBG::enter(int logical_width, int logical_height) {
+void SnowfallMode::enter(int logical_width, int logical_height) {
 
   set_render_interval(33);
 
@@ -71,9 +71,9 @@ void SnowfallBG::enter(int logical_width, int logical_height) {
 
 }
 
-void SnowfallBG::leave() {}
+void SnowfallMode::leave() {}
 
-void SnowfallBG::render_frame(int offset_x, int offset_y, int viewport_width, int viewport_height) {
+void SnowfallMode::render_frame(int offset_x, int offset_y, int viewport_width, int viewport_height) {
 
   assert(viewport_width <= logical_width);
   assert(viewport_height <= logical_height);
@@ -95,6 +95,6 @@ void SnowfallBG::render_frame(int offset_x, int offset_y, int viewport_width, in
 
 }
 
-CommandHandleResult SnowfallBG::handle_command(String command) {
+CommandHandleResult SnowfallMode::handle_command(String command) {
   return CommandHandleResult::NOT_HANDLED;
 }

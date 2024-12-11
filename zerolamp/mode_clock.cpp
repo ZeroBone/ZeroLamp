@@ -1,19 +1,19 @@
-#include "fg_clock.h"
+#include "mode_clock.h"
 
 #include <cassert>
 #include "font.h"
 #include "wlan.h"
 
-void ClockFG::enter(int logical_width, int logical_height) {
+void ClockMode::enter(int logical_width, int logical_height) {
   this->logical_width = logical_width;
   this->logical_height = logical_height;
 
   set_render_interval(500);
 }
 
-void ClockFG::leave() {}
+void ClockMode::leave() {}
 
-void ClockFG::render_frame(int offset_x, int offset_y, int viewport_width, int viewport_height) {
+void ClockMode::render_frame(int offset_x, int offset_y, int viewport_width, int viewport_height) {
 
   assert(viewport_width <= logical_width);
   assert(viewport_height <= logical_height);
@@ -43,6 +43,6 @@ void ClockFG::render_frame(int offset_x, int offset_y, int viewport_width, int v
 
 }
 
-CommandHandleResult ClockFG::handle_command(String command) {
+CommandHandleResult ClockMode::handle_command(String command) {
   return CommandHandleResult::NOT_HANDLED;
 }

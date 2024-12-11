@@ -1,4 +1,4 @@
-#include "fg_snake_game.h"
+#include "mode_snake.h"
 #include "matrix.h"
 #include <cassert>
 #include "bluetooth.h"
@@ -20,7 +20,7 @@ SnakeDirection get_random_snake_direction() {
 
 }
 
-void SnakeGameFG::enter(int logical_width, int logical_height) {
+void SnakeMode::enter(int logical_width, int logical_height) {
 
   assert(logical_width >= 3);
   assert(logical_height >= 3);
@@ -78,13 +78,11 @@ void SnakeGameFG::enter(int logical_width, int logical_height) {
   set_render_interval(200);
 }
 
-void SnakeGameFG::leave() {
-  if (snake != nullptr) {
-    delete[] snake;
-  }
+void SnakeMode::leave() {
+  delete[] snake;
 }
 
-void SnakeGameFG::move_snake() {
+void SnakeMode::move_snake() {
   
   SnakePoint next = snake[0];
 
@@ -165,7 +163,7 @@ void SnakeGameFG::move_snake() {
 
 }
 
-void SnakeGameFG::spawn_food() {
+void SnakeMode::spawn_food() {
 
   while (true) {
 
@@ -191,7 +189,7 @@ void SnakeGameFG::spawn_food() {
 
 }
 
-void SnakeGameFG::render_frame(int offset_x, int offset_y, int viewport_width, int viewport_height) {
+void SnakeMode::render_frame(int offset_x, int offset_y, int viewport_width, int viewport_height) {
 
   if (bluetooth_device_connected()) {
     move_snake();
@@ -221,7 +219,7 @@ void SnakeGameFG::render_frame(int offset_x, int offset_y, int viewport_width, i
 
 }
 
-CommandHandleResult SnakeGameFG::handle_command(String command) {
+CommandHandleResult SnakeMode::handle_command(String command) {
 
   if (command.equalsIgnoreCase("w")) {
     if (movement_direction != SnakeDirection::DOWN) {

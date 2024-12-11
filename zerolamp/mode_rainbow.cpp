@@ -1,14 +1,14 @@
-#include "bg_rainbow.h"
+#include "mode_rainbow.h"
 #include "matrix.h"
 
-void RainbowBG::enter(int logical_width, int logical_height) {
+void RainbowMode::enter(int logical_width, int logical_height) {
   hue = 0;
   set_render_interval(33);
 }
 
-void RainbowBG::leave() {}
+void RainbowMode::leave() {}
 
-void RainbowBG::render_frame(int offset_x, int offset_y, int viewport_width, int viewport_height) {
+void RainbowMode::render_frame(int offset_x, int offset_y, int viewport_width, int viewport_height) {
   for (int x = 0; x < viewport_width; x++) {
     for (int y = 0; y < viewport_height; y++) {
       matrix_setLedColor(
@@ -22,6 +22,6 @@ void RainbowBG::render_frame(int offset_x, int offset_y, int viewport_width, int
   hue++;
 }
 
-CommandHandleResult RainbowBG::handle_command(String command) {
+CommandHandleResult RainbowMode::handle_command(String command) {
   return CommandHandleResult::NOT_HANDLED;
 }

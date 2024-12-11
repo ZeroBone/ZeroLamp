@@ -1,13 +1,13 @@
-#include "bg_fill.h"
+#include "mode_fill.h"
 #include "matrix.h"
 
-void FillBG::enter(int logical_width, int logical_height) {
+void FillMode::enter(int logical_width, int logical_height) {
   set_render_interval(1000);
 }
 
-void FillBG::leave() {}
+void FillMode::leave() {}
 
-void FillBG::render_frame(int offset_x, int offset_y, int viewport_width, int viewport_height) {
+void FillMode::render_frame(int offset_x, int offset_y, int viewport_width, int viewport_height) {
   for (int x = 0; x < viewport_width; x++) {
     for (int y = 0; y < viewport_height; y++) {
       matrix_setLedColor(
@@ -19,6 +19,6 @@ void FillBG::render_frame(int offset_x, int offset_y, int viewport_width, int vi
   }
 }
 
-CommandHandleResult FillBG::handle_command(String command) {
+CommandHandleResult FillMode::handle_command(String command) {
   return CommandHandleResult::NOT_HANDLED;
 }

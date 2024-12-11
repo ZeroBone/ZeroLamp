@@ -1,13 +1,13 @@
-#ifndef ZB_BG_RAINBOW_H
-#define ZB_BG_RAINBOW_H
+#ifndef ZB_MODE_FILL_H
+#define ZB_MODE_FILL_H
 
-#include <Arduino.h>
+#include <FastLED.h>
 #include "mode.h"
 
-class RainbowBG : public LampMode {
+class FillMode : public LampMode {
 
 private:
-  uint8_t hue;
+  CRGB fill_color = CRGB::Yellow;
 
 public:
   void enter(int logical_width, int logical_height);
