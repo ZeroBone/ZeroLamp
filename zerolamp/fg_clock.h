@@ -41,8 +41,10 @@ public:
     snprintf(hourStr, sizeof(hourStr), "%02d", cur_time->tm_hour);
     snprintf(minuteStr, sizeof(minuteStr), "%02d", cur_time->tm_min);
 
-    draw_string_horizontally(offset_x + time_position_x, 0, hourStr, offset_x, offset_x + viewport_width - 1, CRGB::Green);
-    draw_string_horizontally(offset_x + time_position_x, 9, minuteStr, offset_x, offset_x + viewport_width - 1, CRGB::Green);
+    time_position_x = 0;
+
+    draw_string_horizontally(offset_x + time_position_x, 0, hourStr, offset_x, offset_x + viewport_width - 1, CRGB::Green, 0);
+    draw_string_horizontally(offset_x + time_position_x, 9, minuteStr, offset_x, offset_x + viewport_width - 1, CRGB::Green, 0);
 
     time_position_x--;
     if (time_position_x < -6 * 2) {

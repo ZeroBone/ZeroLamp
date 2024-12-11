@@ -13,9 +13,9 @@ LampMode* current_mode_fg = nullptr;
 
 void modes_init() {
   current_mode_bg = new RandomBG();
-  current_mode_bg->enter(11, MATRIX_HEIGHT);
+  current_mode_bg->enter(10, MATRIX_HEIGHT);
   current_mode_fg = new ClockFG();
-  current_mode_fg->enter(5, MATRIX_HEIGHT);
+  current_mode_fg->enter(6, MATRIX_HEIGHT);
 }
 
 unsigned long lastFrameRenderTime = 0;
@@ -35,10 +35,10 @@ void modes_tick() {
 
   FastLED.clear(false);
 
-  current_mode_bg->render_frame(0, 0, 11, MATRIX_HEIGHT);
+  current_mode_bg->render_frame(2, 0, 10, MATRIX_HEIGHT);
 
   if (current_mode_fg != nullptr) {
-    current_mode_fg->render_frame(11, 0, 5, MATRIX_HEIGHT);
+    current_mode_fg->render_frame(12, 0, 6, MATRIX_HEIGHT);
   }
 
   FastLED.show();
