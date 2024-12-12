@@ -50,16 +50,13 @@ void modes_tick() {
   bool fg_render = false; // show we render the foreground mode frame?
 
   // check whether we need to render background mode frame
-  if (current_time - current_mode_bg_lastFrameRenderTime >= current_mode_bg->get_render_interval() || current_mode_bg_lastFrameRenderTime == 0) {
+  if (current_time - current_mode_bg_lastFrameRenderTime >= current_mode_bg->get_render_interval()) {
     bg_render = true;
     current_mode_bg_lastFrameRenderTime = current_time;
   }
 
   // check whether we need to render foreground mode frame
-  if (current_mode_fg != nullptr && (
-    current_time - current_mode_fg_lastFrameRenderTime >= current_mode_fg->get_render_interval() ||
-    current_mode_fg_lastFrameRenderTime == 0
-  )) {
+  if (current_mode_fg != nullptr && current_time - current_mode_fg_lastFrameRenderTime >= current_mode_fg->get_render_interval()) {
     fg_render = true;
     current_mode_fg_lastFrameRenderTime = current_time;
   }

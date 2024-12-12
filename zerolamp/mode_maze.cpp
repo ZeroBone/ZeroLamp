@@ -129,7 +129,7 @@ void MazeMode::generate_maze() {
 
 void MazeMode::enter(int logical_width, int logical_height) {
   
-  set_render_interval(500);
+  set_render_interval(1000);
 
   generate_maze();
 
@@ -322,6 +322,7 @@ CommandHandleResult MazeMode::handle_command(String command) {
     }
     else {
       player_y--;
+      request_immediate_rendering();
       bluetooth_serial()->println("Moved up.");
     }
     
@@ -340,6 +341,7 @@ CommandHandleResult MazeMode::handle_command(String command) {
     }
     else {
       player_y++;
+      request_immediate_rendering();
       bluetooth_serial()->println("Moved down.");
     }
     
@@ -358,6 +360,7 @@ CommandHandleResult MazeMode::handle_command(String command) {
     }
     else {
       player_x--;
+      request_immediate_rendering();
       bluetooth_serial()->println("Moved left.");
     }
     
@@ -376,6 +379,7 @@ CommandHandleResult MazeMode::handle_command(String command) {
     }
     else {
       player_x++;
+      request_immediate_rendering();
       bluetooth_serial()->println("Moved right.");
     }
     

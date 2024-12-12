@@ -12,6 +12,7 @@ class LampMode {
 
 private:
   unsigned long render_interval = 500; // number of milliseconds to wait between rendering individual frames
+  bool immediate_rendering_requested = true; // the first frame should be rendered as soon as possible
 
 public:
   LampMode() {}
@@ -30,6 +31,7 @@ public:
 
 protected:
   void set_render_interval(unsigned long new_render_interval);
+  void request_immediate_rendering();
 
 };
 
