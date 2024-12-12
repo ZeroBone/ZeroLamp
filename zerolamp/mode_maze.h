@@ -3,6 +3,14 @@
 
 #include "mode.h"
 
+enum class PlayerState {
+  NOT_MOVING,
+  MOVING_UP,
+  MOVING_DOWN,
+  MOVING_LEFT,
+  MOVING_RIGHT
+};
+
 class MazeMode : public LampMode {
 
 private:
@@ -16,6 +24,8 @@ private:
   int player_x;
   int player_y;
 
+  PlayerState player_state;
+
 public:
   MazeMode(int maze_width, int maze_height) : maze_width(maze_width), maze_height(maze_height) {}
 
@@ -23,6 +33,7 @@ public:
   void leave();
   void render_frame(int offset_x, int offset_y, int viewport_width, int viewport_height);
   CommandHandleResult handle_command(String command);
+  void handle_event(void* event);
 
 private:
   void initialize_walls();

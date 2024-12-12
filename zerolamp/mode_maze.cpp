@@ -137,6 +137,8 @@ void MazeMode::enter(int logical_width, int logical_height) {
   player_x = random8(maze_width);
   player_y = random8(maze_height);
 
+  player_state = PlayerState::NOT_MOVING;
+
 }
 
 void MazeMode::leave() {
@@ -300,18 +302,38 @@ void MazeMode::render_frame(int offset_x, int offset_y, int viewport_width, int 
   matrix_setLedColor(
     offset_y + player_screen_y,
     offset_x + player_screen_x,
-    CRGB::Yellow
+    player_state != PlayerState::NOT_MOVING ? CRGB::Red : CRGB::Yellow
   );
 
 }
+
+#define MODE_MAZE_PLAYER_MOVEMENT_COMPLETION_TIMEOUT 500
+#define MODE_MAZE_EVENT_COMPLETE_MOVEMENT_OF_PLAYER nullptr
 
 CommandHandleResult MazeMode::handle_command(String command) {
 
   assert(player_x >= 0 && player_y >= 0);
   assert(player_x < maze_width && player_y < maze_height);
 
-  if (command.equalsIgnoreCase("w")) {
+  bool player_wants_to_move_up = command.equalsIgnoreCase("w");
+  bool player_wants_to_move_down = command.equalsIgnoreCase("s");
+  bool player_wants_to_move_left = command.equalsIgnoreCase("a");
+  bool player_wants_to_move_right = command.equalsIgnoreCase("d");
+
+  bool player_is_moving = player_state != PlayerState::NOT_MOVING;
+
+  if ((player_wants_to_move_up || player_wants_to_move_down || player_wants_to_move_left || player_wants_to_move_right) && player_is_moving) {
+    // player wants to move, but player is currently already moving
+    // tell the player that they can't move while moving
+    bluetooth_serial()->println("Please wait until you stop moving before trying to move again!");
+    return CommandHandleResult::HANDLED;
+  }
+
+  if (player_wants_to_move_up) {
     // player tries to move up
+
+    assert(!player_is_moving);
+
     bool wall_above = get_horizontal_wall(player_y, player_x);
 
     if (wall_above) {
@@ -321,16 +343,20 @@ CommandHandleResult MazeMode::handle_command(String command) {
       bluetooth_serial()->println("Can't move up, you have reached the border of the maze!");
     }
     else {
-      player_y--;
+      player_state = PlayerState::MOVING_UP;
       request_immediate_rendering();
-      bluetooth_serial()->println("Moved up.");
+      schedule_event(MODE_MAZE_PLAYER_MOVEMENT_COMPLETION_TIMEOUT, MODE_MAZE_EVENT_COMPLETE_MOVEMENT_OF_PLAYER);
+      bluetooth_serial()->println("Moving up...");
     }
     
     return CommandHandleResult::HANDLED;
   }
 
-  if (command.equalsIgnoreCase("s")) {
+  if (player_wants_to_move_down) {
     // player tries to move down
+
+    assert(!player_is_moving);
+
     bool wall_below = get_horizontal_wall(player_y + 1, player_x);
 
     if (wall_below) {
@@ -340,16 +366,20 @@ CommandHandleResult MazeMode::handle_command(String command) {
       bluetooth_serial()->println("Can't move down, you have reached the border of the maze!");
     }
     else {
-      player_y++;
+      player_state = PlayerState::MOVING_DOWN;
       request_immediate_rendering();
-      bluetooth_serial()->println("Moved down.");
+      schedule_event(MODE_MAZE_PLAYER_MOVEMENT_COMPLETION_TIMEOUT, MODE_MAZE_EVENT_COMPLETE_MOVEMENT_OF_PLAYER);
+      bluetooth_serial()->println("Moving down...");
     }
     
     return CommandHandleResult::HANDLED;
   }
 
-  if (command.equalsIgnoreCase("a")) {
+  if (player_wants_to_move_left) {
     // player tries to move left
+
+    assert(!player_is_moving);
+
     bool wall_left = get_vertical_wall(player_y, player_x);
 
     if (wall_left) {
@@ -359,16 +389,20 @@ CommandHandleResult MazeMode::handle_command(String command) {
       bluetooth_serial()->println("Can't move left, you have reached the border of the maze!");
     }
     else {
-      player_x--;
+      player_state = PlayerState::MOVING_LEFT;
       request_immediate_rendering();
-      bluetooth_serial()->println("Moved left.");
+      schedule_event(MODE_MAZE_PLAYER_MOVEMENT_COMPLETION_TIMEOUT, MODE_MAZE_EVENT_COMPLETE_MOVEMENT_OF_PLAYER);
+      bluetooth_serial()->println("Moving left...");
     }
     
     return CommandHandleResult::HANDLED;
   }
 
-  if (command.equalsIgnoreCase("d")) {
+  if (player_wants_to_move_right) {
     // player tries to move right
+
+    assert(!player_is_moving);
+
     bool wall_right = get_vertical_wall(player_y, player_x + 1);
 
     if (wall_right) {
@@ -378,13 +412,59 @@ CommandHandleResult MazeMode::handle_command(String command) {
       bluetooth_serial()->println("Can't move right, you have reached the border of the maze!");
     }
     else {
-      player_x++;
+      player_state = PlayerState::MOVING_RIGHT;
       request_immediate_rendering();
-      bluetooth_serial()->println("Moved right.");
+      schedule_event(MODE_MAZE_PLAYER_MOVEMENT_COMPLETION_TIMEOUT, MODE_MAZE_EVENT_COMPLETE_MOVEMENT_OF_PLAYER);
+      bluetooth_serial()->println("Moving right...");
     }
     
     return CommandHandleResult::HANDLED;
   }
 
   return CommandHandleResult::NOT_HANDLED;
+}
+
+void MazeMode::handle_event(void* event) {
+  
+  if (event == MODE_MAZE_EVENT_COMPLETE_MOVEMENT_OF_PLAYER) {
+    // player must be moving
+    assert(player_state != PlayerState::NOT_MOVING);
+
+    switch (player_state) {
+
+      case PlayerState::MOVING_UP:
+        player_y--;
+        assert(player_y >= 0);
+        break;
+
+      case PlayerState::MOVING_DOWN:
+        player_y++;
+        assert(player_y < maze_height);
+        break;
+
+      case PlayerState::MOVING_LEFT:
+        player_x--;
+        assert(player_x >= 0);
+        break;
+
+      case PlayerState::MOVING_RIGHT:
+        player_x++;
+        assert(player_x < maze_width);
+        break;
+
+      default:
+        assert(false);
+        break;
+
+    }
+
+    player_state = PlayerState::NOT_MOVING;
+
+    return;
+
+  }
+
+  // unknown event, this should not happen
+  assert(false);
+
 }

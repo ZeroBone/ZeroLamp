@@ -22,3 +22,8 @@ void FillMode::render_frame(int offset_x, int offset_y, int viewport_width, int 
 CommandHandleResult FillMode::handle_command(String command) {
   return CommandHandleResult::NOT_HANDLED;
 }
+
+void FillMode::handle_event(void* event) {
+  // we don't expect any events for this mode
+  assert(false);
+}

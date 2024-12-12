@@ -98,3 +98,8 @@ void SnowfallMode::render_frame(int offset_x, int offset_y, int viewport_width, 
 CommandHandleResult SnowfallMode::handle_command(String command) {
   return CommandHandleResult::NOT_HANDLED;
 }
+
+void SnowfallMode::handle_event(void* event) {
+  // we don't expect any events for this mode
+  assert(false);
+}

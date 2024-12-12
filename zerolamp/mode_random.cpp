@@ -18,3 +18,8 @@ void RandomMode::render_frame(int offset_x, int offset_y, int viewport_width, in
 CommandHandleResult RandomMode::handle_command(String command) {
   return CommandHandleResult::NOT_HANDLED;
 }
+
+void RandomMode::handle_event(void* event) {
+  // we don't expect any events for this mode
+  assert(false);
+}

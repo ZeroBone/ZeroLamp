@@ -267,3 +267,8 @@ CommandHandleResult SnakeMode::handle_command(String command) {
 
   return CommandHandleResult::NOT_HANDLED;
 }
+
+void SnakeMode::handle_event(void* event) {
+  // we don't expect any events for this mode
+  assert(false);
+}

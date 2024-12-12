@@ -44,6 +44,15 @@ void modes_handle_command(String command) {
 
 void modes_tick() {
 
+  // fire events if needed
+  current_mode_bg->event_tick();
+
+  if (current_mode_fg != nullptr) {
+    current_mode_fg->event_tick();
+  }
+
+  // render frames
+
   unsigned long current_time = millis();
 
   bool bg_render = false; // show we render the background mode frame?
