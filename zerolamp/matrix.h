@@ -1,5 +1,5 @@
-#ifndef MATRIX_H
-#define MATRIX_H
+#ifndef ZB_MATRIX_H
+#define ZB_MATRIX_H
 
 #include <FastLED.h>
 

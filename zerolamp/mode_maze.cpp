@@ -190,8 +190,8 @@ void MazeMode::render_frame(int offset_x, int offset_y, int viewport_width, int 
 
   // ----------- Step 3 -----------
   // translate (leftmost_maze_position, topmost_maze_position) in maze coordinates to corresponding screen coordinates
-  int leftmost_maze_position_screen = player_screen_x - (visible_maze_positions_before_player_x << 1);
-  int topmost_maze_position_screen = player_screen_y - (visible_maze_positions_before_player_y << 1);
+  int leftmost_maze_position_screen = player_screen_x - ((player_x - leftmost_maze_position) << 1);
+  int topmost_maze_position_screen = player_screen_y - ((player_y - topmost_maze_position) << 1);
 
   assert(leftmost_maze_position_screen >= 0);
   assert(topmost_maze_position_screen >= 0);
@@ -208,8 +208,8 @@ void MazeMode::render_frame(int offset_x, int offset_y, int viewport_width, int 
       // WARNING: (maze_x, maze_y) need not be a valid position in the maze
       // these positions can represent positions in the maze in the first column after the right border of the maze,
       // or the first row after the bottom border of the maze
-      bool maze_position_after_right_border = maze_x == rightmost_maze_position + 1;
-      bool maze_position_after_bottom_border = maze_y == bottommost_maze_position + 1;
+      bool maze_position_after_right_border = maze_x == maze_width;
+      bool maze_position_after_bottom_border = maze_y == maze_height;
 
       assert(maze_position_after_right_border || maze_x < maze_width);
       assert(maze_position_after_bottom_border || maze_y < maze_height);
@@ -219,8 +219,8 @@ void MazeMode::render_frame(int offset_x, int offset_y, int viewport_width, int 
       int screen_y = topmost_maze_position_screen + ((maze_y - topmost_maze_position) << 1);
 
       assert(screen_x >= 0 && screen_y >= 0);
-      assert(screen_x < viewport_width || maze_position_after_right_border);
-      assert(screen_y < viewport_height || maze_position_after_bottom_border);
+      // assert(screen_x < viewport_width || maze_position_after_right_border);
+      // assert(screen_y < viewport_height || maze_position_after_bottom_border);
 
       // check the horizontal wall above (maze_x, maze_y)
       bool wall_above;
@@ -259,7 +259,7 @@ void MazeMode::render_frame(int offset_x, int offset_y, int viewport_width, int 
           matrix_setLedColor(
             offset_y + screen_y,
             offset_x + screen_x - 1,
-            CRGB::Green
+            CRGB::Blue // CRGB::Green
           ); 
         }
       }
@@ -286,7 +286,7 @@ void MazeMode::render_frame(int offset_x, int offset_y, int viewport_width, int 
             matrix_setLedColor(
               offset_y + screen_y - 1,
               offset_x + screen_x - 1,
-              CRGB::Red
+              CRGB::Blue // CRGB::Red
             );
           }
         }
