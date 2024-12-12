@@ -2,7 +2,7 @@
 #include "mode.h"
 #include "matrix.h"
 #include "mode_fire.h"
-#include "mode_snake.h"
+#include "mode_maze.h"
 
 // VectorQueue<LampMode*, MODES_QUEUE_SIZE> modes_queue;
 
@@ -18,7 +18,7 @@ int current_mode_fg_viewport_width = 6;
 void modes_init() {
   current_mode_bg = new FireMode();
   current_mode_bg->enter(10, MATRIX_HEIGHT);
-  current_mode_fg = new SnakeMode();
+  current_mode_fg = new MazeMode(10, 10);
   current_mode_fg->enter(6, MATRIX_HEIGHT);
 }
 
