@@ -148,11 +148,49 @@ void MazeMode::leave() {
 
 void MazeMode::render_frame(int offset_x, int offset_y, int viewport_width, int viewport_height) {
 
-  // calculate the coordinates of the player on the screen
-  int player_screen_x = viewport_width >> 1;
-  int player_screen_y = viewport_height >> 1;
+  int player_actual_screen_x = viewport_width >> 1;
+  int player_actual_screen_y = viewport_height >> 1;
 
   // ----------- Step 1 -----------
+  // calculate the coordinates of the player on the screen
+
+  int player_screen_x;
+  int player_screen_y;
+
+  switch (player_state) {
+
+    case PlayerState::NOT_MOVING:
+      player_screen_x = player_actual_screen_x;
+      player_screen_y = player_actual_screen_y;
+      break;
+
+    case PlayerState::MOVING_UP:
+      player_screen_x = player_actual_screen_x;
+      player_screen_y = player_actual_screen_y + 1;
+      break;
+
+    case PlayerState::MOVING_DOWN:
+      player_screen_x = player_actual_screen_x;
+      player_screen_y = player_actual_screen_y - 1;
+      break;
+
+    case PlayerState::MOVING_LEFT:
+      player_screen_x = player_actual_screen_x + 1;
+      player_screen_y = player_actual_screen_y;
+      break;
+
+    case PlayerState::MOVING_RIGHT:
+      player_screen_x = player_actual_screen_x - 1;
+      player_screen_y = player_actual_screen_y;
+      break;
+
+    default:
+      assert(false);
+      break;
+
+  }
+
+  // ----------- Step 2 -----------
   // calculate the position in the maze that corresponds to the top left corner of the screen
   // more precisely: leftmost and topmost position in the maze that will be visible on the screen
   
@@ -171,7 +209,7 @@ void MazeMode::render_frame(int offset_x, int offset_y, int viewport_width, int 
     topmost_maze_position = 0;
   }
 
-  // ----------- Step 2 -----------
+  // ----------- Step 3 -----------
   // calculate the position in the maze that corresponds to the bottom right corner of the screen
   // more precisely: rightmost and bottommost position in the maze that will be visible on the screen
 
@@ -190,7 +228,7 @@ void MazeMode::render_frame(int offset_x, int offset_y, int viewport_width, int 
     bottommost_maze_position = maze_height - 1;
   }
 
-  // ----------- Step 3 -----------
+  // ----------- Step 4 -----------
   // translate (leftmost_maze_position, topmost_maze_position) in maze coordinates to corresponding screen coordinates
   int leftmost_maze_position_screen = player_screen_x - ((player_x - leftmost_maze_position) << 1);
   int topmost_maze_position_screen = player_screen_y - ((player_y - topmost_maze_position) << 1);
@@ -198,7 +236,7 @@ void MazeMode::render_frame(int offset_x, int offset_y, int viewport_width, int 
   assert(leftmost_maze_position_screen >= 0);
   assert(topmost_maze_position_screen >= 0);
   
-  // ----------- Step 4 -----------
+  // ----------- Step 5 -----------
   // loop through all relevant maze positions and render them
   
   for (int maze_y = topmost_maze_position; maze_y <= bottommost_maze_position + 1; maze_y++) {
@@ -297,17 +335,17 @@ void MazeMode::render_frame(int offset_x, int offset_y, int viewport_width, int 
     }
   }
 
-  // ----------- Step 4 -----------
+  // ----------- Step 6 -----------
   // draw player
   matrix_setLedColor(
-    offset_y + player_screen_y,
-    offset_x + player_screen_x,
-    player_state != PlayerState::NOT_MOVING ? CRGB::Red : CRGB::Yellow
+    offset_y + player_actual_screen_y,
+    offset_x + player_actual_screen_x,
+    CRGB::Yellow
   );
 
 }
 
-#define MODE_MAZE_PLAYER_MOVEMENT_COMPLETION_TIMEOUT 500
+#define MODE_MAZE_PLAYER_MOVEMENT_COMPLETION_TIMEOUT 300
 #define MODE_MAZE_EVENT_COMPLETE_MOVEMENT_OF_PLAYER nullptr
 
 CommandHandleResult MazeMode::handle_command(String command) {
