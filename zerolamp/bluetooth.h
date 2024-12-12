@@ -1,5 +1,5 @@
-#ifndef BLUETOOTH_H
-#define BLUETOOTH_H
+#ifndef ZB_BLUETOOTH_H
+#define ZB_BLUETOOTH_H
 
 #include <BluetoothSerial.h>
 

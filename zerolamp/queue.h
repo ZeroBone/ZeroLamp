@@ -1,5 +1,5 @@
-#ifndef QUEUE_H
-#define QUEUE_H
+#ifndef ZB_QUEUE_H
+#define ZB_QUEUE_H
 
 #include <cassert>
 

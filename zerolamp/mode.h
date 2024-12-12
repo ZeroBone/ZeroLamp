@@ -1,5 +1,5 @@
-#ifndef MODE_H
-#define MODE_H
+#ifndef ZB_MODE_H
+#define ZB_MODE_H
 
 #include <Arduino.h>
 

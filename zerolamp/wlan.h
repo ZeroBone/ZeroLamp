@@ -1,5 +1,5 @@
-#ifndef WLAN_H
-#define WLAN_H
+#ifndef ZB_WLAN_H
+#define ZB_WLAN_H
 
 #define WLAN_SSID "YODA"
 #define WLAN_PASSWORD "2I9gF8FyJB27rf0ObvaVmrOGaJw5zrVh"
