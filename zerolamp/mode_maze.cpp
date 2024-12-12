@@ -459,6 +459,7 @@ void MazeMode::handle_event(void* event) {
     }
 
     player_state = PlayerState::NOT_MOVING;
+    request_immediate_rendering();
 
     return;
 
