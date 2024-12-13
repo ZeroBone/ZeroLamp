@@ -229,15 +229,25 @@ template <typename T>
 class MergeSortAlgorithm : public ArrayManipulationAlgorithm<T> {
 
 private:
+  enum class AlgoState {
+    OUTER_LOOP,
+    INNER_LOOP,
+    MERGE_LOOP_1,
+    MERGE_LOOP_2,
+    MERGE_LOOP_3
+  };
+
   int array_size;
   T* temp;
   int size = 1;
-  int left = 0;
+  int left;
   int mid;
   int right;
   int i;
   int j;
   int k;
+
+  AlgoState state = AlgoState::OUTER_LOOP;
   bool completed;
 
 public:
@@ -249,12 +259,23 @@ public:
 
     // merge sort pseudocode with labels
     /*
-    for (int size = 1; size < array_size; size *= 2) {
+
+    int size = 1;
+
+    // --------------------------------
+    // label: AlgoState::OUTER_LOOP
+    // --------------------------------
+    for (; size < array_size; size *= 2) {
 
       // create a copy of the array
       std::copy(array, array + array_size, temp);
 
-      for (int left = 0; left < array_size; left += 2 * size) {
+      int left = 0;
+
+      // --------------------------------
+      // label: AlgoState::INNER_LOOP
+      // --------------------------------
+      for (; left < array_size; left += 2 * size) {
         
         int mid = left + size;
         if (mid > array_size) {
@@ -270,6 +291,9 @@ public:
         int j = mid; // starting index for right subarray
         int k = left; // starting index to store sorted elements
 
+        // --------------------------------
+        // label: AlgoState::MERGE_LOOP_1
+        // --------------------------------
         // merge sorted array fragments
         while (i < mid && j < right) {
           if (temp[i] <= temp[j]) {
@@ -280,11 +304,17 @@ public:
           }
         }
 
+        // --------------------------------
+        // label: AlgoState::MERGE_LOOP_2
+        // --------------------------------
         // copy remaining elements of the left subarray, if any
         while (i < mid) {
           array[k++] = temp[i++];
         }
 
+        // --------------------------------
+        // label: AlgoState::MERGE_LOOP_3
+        // --------------------------------
         // copy remaining elements of the right subarray, if any
         while (j < right) {
           array[k++] = temp[j++];
@@ -296,9 +326,109 @@ public:
 
     assert(!completed);
 
-    if (size >= array_size) {
-      completed = true;
-      return;
+    while (true) {
+      switch (state) {
+
+        case AlgoState::OUTER_LOOP:
+
+          if (size >= array_size) {
+            completed = true;
+            return;
+          }
+
+          // create a copy of the array
+          std::copy(array, array + array_size, temp);
+
+          left = 0;
+
+          state = AlgoState::INNER_LOOP;
+
+          break;
+
+        case AlgoState::INNER_LOOP:
+
+          if (left >= array_size) {
+            // condition of the inner loop not satisfied
+            size <<= 1;
+            state = AlgoState::OUTER_LOOP;
+          }
+          else {
+            // run the body of the inner loop
+            mid = left + size;
+            if (mid > array_size) {
+              mid = array_size;
+            }
+
+            right = left + 2 * size;
+            if (right > array_size) {
+              right = array_size;
+            }
+            
+            i = left; // starting index for left subarray
+            j = mid; // starting index for right subarray
+            k = left; // starting index to store sorted elements
+
+            state = AlgoState::MERGE_LOOP_1;
+          }
+
+          break;
+
+        case AlgoState::MERGE_LOOP_1:
+
+          if (i < mid && j < right) {
+            // run the body of the loop
+            
+            if (temp[i] <= temp[j]) {
+              array[k++] = temp[i++];
+            }
+            else {
+              array[k++] = temp[j++];
+            }
+
+            return; // since we changed an array element, the current step has ended
+
+          }
+          else {
+            // the condition of the loop doesn't hold
+            // go to the next loop
+            state = AlgoState::MERGE_LOOP_2;
+          }
+
+          break;
+
+        case AlgoState::MERGE_LOOP_2:
+
+          if (i < mid) {
+            // run the body of the loop
+            array[k++] = temp[i++];
+            return; // since we changed an array element, the current step has ended
+          }
+          else {
+            state = AlgoState::MERGE_LOOP_3;
+          }
+
+          break;
+
+        case AlgoState::MERGE_LOOP_3:
+
+          if (j < right) {
+            // run the body of the loop
+            array[k++] = temp[j++];
+            return; // since we changed an array element, the current step has ended
+          }
+          else {
+            // the loop finished executing
+            left += size << 1;
+            state = AlgoState::INNER_LOOP;
+          }
+
+          break;
+
+        default:
+          assert(false);
+          break;
+
+      }
     }
 
   }
