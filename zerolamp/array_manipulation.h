@@ -225,4 +225,71 @@ public:
 
 };
 
+template <typename T>
+class MergeSortAlgorithm : public ArrayManipulationAlgorithm<T> {
+
+private:
+  int array_size;
+  int size = 1;
+  int left = 0;
+  bool completed;
+
+public:
+  MergeSortAlgorithm(int array_size) : array_size(array_size), completed(array_size <= 1) {}
+
+  void step(T* array) {
+
+    // merge sort pseudocode with labels
+    /*
+    for (int size = 1; size < array_size; size *= 2) {
+      for (int left = 0; left < array_size; left += 2 * size) {
+        int mid = min(left + size, array_size);
+        int right = min(left + 2 * size, array_size);
+        int i = left; // Starting index for left subarray
+        int j = mid; // Starting index for right subarray
+        int k = left; // Starting index to store sorted elements in temp
+
+        // merge sorted array fragments
+        while (i < mid && j < right) {
+          if (arr[i] <= arr[j]) {
+            temp[k++] = arr[i++];
+          }
+          else {
+            temp[k++] = arr[j++];
+          }
+        }
+
+        // copy remaining elements of the left subarray, if any
+        while (i < mid) {
+          temp[k++] = arr[i++];
+        }
+
+        // copy remaining elements of the right subarray, if any
+        while (j < right) {
+          temp[k++] = arr[j++];
+        }
+
+        // Copy sorted elements back to the original array
+        for (int l = left; l < right; ++l) {
+          arr[l] = temp[l];
+        }
+      }
+    }
+    */
+
+    assert(!completed);
+
+    if (size >= array_size) {
+      completed = true;
+      return;
+    }
+
+  }
+  
+  bool is_completed() {
+    return completed;
+  }
+
+};
+
 #endif
