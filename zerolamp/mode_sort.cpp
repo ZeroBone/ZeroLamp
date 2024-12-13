@@ -157,7 +157,6 @@ void SortMode::handle_event(void* event) {
       }
 
       uint8_t new_sorting_algorithm_id = random8(6);
-      new_sorting_algorithm_id = 5; // TODO: remove this line
 
       switch (new_sorting_algorithm_id) {
         case 0: sorting_algorithm = new BubbleSortAlgorithm<uint8_t>(array_size); break;
