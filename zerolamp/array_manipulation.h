@@ -140,6 +140,7 @@ public:
 
     if (at_the_beginning_of_outer_loop) {
       key = array[i];
+      j = i - 1;
       at_the_beginning_of_outer_loop = false;
     }
 
@@ -156,8 +157,64 @@ public:
         completed = true;
         return;
       }
-      j = i - 1;
       at_the_beginning_of_outer_loop = true;
+    }
+
+  }
+  
+  bool is_completed() {
+    return completed;
+  }
+
+};
+
+template <typename T>
+class SelectionSortAlgorithm : public ArrayManipulationAlgorithm<T> {
+
+private:
+  int array_size;
+  int i = 0;
+  bool completed;
+
+public:
+  SelectionSortAlgorithm(int array_size) : array_size(array_size), completed(array_size <= 1) {}
+
+  void step(T* array) {
+
+    // selection sort:
+    /*
+      for (int i = 0; i < n - 1; i++) {
+        int min_index = i;
+        for (int j = i + 1; j < n; j++) {
+          if (arr[j] < arr[min_index]) {
+            min_index = j;
+          }
+        }
+        std::swap(arr[i], arr[min_index]);
+      }
+    */
+
+    assert(!completed);
+    assert(i <= array_size - 1);
+
+    if (i == array_size - 1) {
+      completed = true;
+      return;
+    }
+
+    int min_index = i;
+
+    for (int j = i + 1; j < array_size; j++) {
+      if (array[j] < array[min_index]) {
+        min_index = j;
+      }
+    }
+
+    std::swap(array[i], array[min_index]);
+    i++;
+
+    if (i == array_size - 1) {
+      completed = true;
     }
 
   }
