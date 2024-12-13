@@ -78,4 +78,6 @@ CommandHandleResult SimplexMode::handle_command(String command) {
   return CommandHandleResult::NOT_HANDLED;
 }
 
-void SimplexMode::handle_event(void* event) {}
+void SimplexMode::handle_event(void* event) {
+  assert(false);
+}

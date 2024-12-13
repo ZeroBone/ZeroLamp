@@ -32,15 +32,44 @@ void SortMode::enter(int logical_width, int logical_height) {
 
   delete[] temp_array;
 
-  set_render_interval(500);
+  state = SortModeState::SHUFFLED;
+
+  set_render_interval(ALGORIHTM_VISUALIZATION_SPEED);
+
+  schedule_event(TIMEOUT_BETWEEN_ARRAY_ALGORITHMS, nullptr);
 
 }
 
 void SortMode::leave() {
   delete[] array;
-  if (current_algorithm != nullptr) {
-    delete current_algorithm;
+
+  if (shuffling_algorithm != nullptr) {
+    delete shuffling_algorithm;
   }
+
+  if (sorting_algorithm != nullptr) {
+    delete sorting_algorithm;
+  }
+
+}
+
+ArrayManipulationAlgorithm<uint8_t>* SortMode::get_currently_running_algorithm() {
+
+  switch (state) {
+
+    case SortModeState::SORTING:
+      return sorting_algorithm;
+
+    case SortModeState::SHUFFLING:
+      return shuffling_algorithm;
+
+    default:
+      break;
+
+  }
+
+  return nullptr;
+
 }
 
 void SortMode::render_frame(int offset_x, int offset_y, int viewport_width, int viewport_height) {
@@ -76,10 +105,79 @@ void SortMode::render_frame(int offset_x, int offset_y, int viewport_width, int 
     }
 
   }
+
+  // run the current array manipulation algorithm
+  ArrayManipulationAlgorithm<uint8_t>* current_algorithm = get_currently_running_algorithm();
+
+  if (current_algorithm == nullptr) {
+    return;
+  }
+
+  if (current_algorithm->is_completed()) {
+
+    switch (state) {
+
+      case SortModeState::SORTING:
+        state = SortModeState::SORTED;
+        break;
+
+      case SortModeState::SHUFFLING:
+        state = SortModeState::SHUFFLED;
+        break;
+
+      default:
+        assert(false);
+        break;
+
+    }
+
+    schedule_event(TIMEOUT_BETWEEN_ARRAY_ALGORITHMS, nullptr);
+    return;
+  }
+
+  current_algorithm->step(array);
+
 }
 
 CommandHandleResult SortMode::handle_command(String command) {
   return CommandHandleResult::NOT_HANDLED;
 }
 
-void SortMode::handle_event(void* event) {}
+void SortMode::handle_event(void* event) {
+
+  assert(event == nullptr); // no other events are known
+
+  switch (state) {
+
+    case SortModeState::SHUFFLED: {
+      // start a sorting algorithm
+      sorting_algorithm = new BubbleSortAlgorithm<uint8_t>(array_size);
+      state = SortModeState::SORTING;
+      break;
+    }
+
+    case SortModeState::SORTED: {
+      // verify the array is indeed sorted
+      uint8_t previous_value = array[0];
+
+      for (int i = 1; i < array_size; i++) {
+        uint8_t cur_value = array[i];
+        assert(previous_value <= cur_value);
+        previous_value = cur_value;
+      }
+
+      // start a shuffling algorithm
+      shuffling_algorithm = new FisherYatesShuffleAlgorithm<uint8_t>(array_size);
+      state = SortModeState::SHUFFLING;
+      break;
+    }
+
+    default:
+      assert(false);
+      break;
+
+  }
+
+  request_immediate_rendering();
+
+}
