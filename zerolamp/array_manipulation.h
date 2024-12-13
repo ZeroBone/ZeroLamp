@@ -230,49 +230,66 @@ class MergeSortAlgorithm : public ArrayManipulationAlgorithm<T> {
 
 private:
   int array_size;
+  T* temp;
   int size = 1;
   int left = 0;
+  int mid;
+  int right;
+  int i;
+  int j;
+  int k;
   bool completed;
 
 public:
-  MergeSortAlgorithm(int array_size) : array_size(array_size), completed(array_size <= 1) {}
+  MergeSortAlgorithm(int array_size) : array_size(array_size), completed(array_size <= 1) {
+    temp = new T[array_size];
+  }
 
   void step(T* array) {
 
     // merge sort pseudocode with labels
     /*
     for (int size = 1; size < array_size; size *= 2) {
+
+      // create a copy of the array
+      std::copy(array, array + array_size, temp);
+
       for (int left = 0; left < array_size; left += 2 * size) {
-        int mid = min(left + size, array_size);
-        int right = min(left + 2 * size, array_size);
-        int i = left; // Starting index for left subarray
-        int j = mid; // Starting index for right subarray
-        int k = left; // Starting index to store sorted elements in temp
+        
+        int mid = left + size;
+        if (mid > array_size) {
+          mid = array_size;
+        }
+
+        int right = left + 2 * size;
+        if (right > array_size) {
+          right = array_size;
+        }
+        
+        int i = left; // starting index for left subarray
+        int j = mid; // starting index for right subarray
+        int k = left; // starting index to store sorted elements
 
         // merge sorted array fragments
         while (i < mid && j < right) {
-          if (arr[i] <= arr[j]) {
-            temp[k++] = arr[i++];
+          if (temp[i] <= temp[j]) {
+            array[k++] = temp[i++];
           }
           else {
-            temp[k++] = arr[j++];
+            array[k++] = temp[j++];
           }
         }
 
         // copy remaining elements of the left subarray, if any
         while (i < mid) {
-          temp[k++] = arr[i++];
+          array[k++] = temp[i++];
         }
 
         // copy remaining elements of the right subarray, if any
         while (j < right) {
-          temp[k++] = arr[j++];
+          array[k++] = temp[j++];
         }
 
-        // Copy sorted elements back to the original array
-        for (int l = left; l < right; ++l) {
-          arr[l] = temp[l];
-        }
       }
     }
     */
@@ -288,6 +305,10 @@ public:
   
   bool is_completed() {
     return completed;
+  }
+
+  ~MergeSortAlgorithm() {
+    delete[] temp;
   }
 
 };

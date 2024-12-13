@@ -152,9 +152,13 @@ void SortMode::handle_event(void* event) {
     case SortModeState::SHUFFLED: {
       // choose a random sorting algorithm and start sorting using it
 
-      uint8_t sorting_algorithm_id = 3;
+      if (sorting_algorithm != nullptr) {
+        delete sorting_algorithm;
+      }
 
-      switch (sorting_algorithm_id) {
+      uint8_t new_sorting_algorithm_id = 3;
+
+      switch (new_sorting_algorithm_id) {
         case 0: sorting_algorithm = new BubbleSortAlgorithm<uint8_t>(array_size); break;
         case 1: sorting_algorithm = new InsertionSortAlgorithm<uint8_t>(array_size); break;
         case 2: sorting_algorithm = new SelectionSortAlgorithm<uint8_t>(array_size); break;
@@ -179,6 +183,9 @@ void SortMode::handle_event(void* event) {
       }
 
       // start a shuffling algorithm
+      if (shuffling_algorithm != nullptr) {
+        delete shuffling_algorithm;
+      }
       shuffling_algorithm = new FisherYatesShuffleAlgorithm<uint8_t>(array_size);
       state = SortModeState::SHUFFLING;
       break;
