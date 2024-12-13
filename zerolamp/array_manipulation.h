@@ -1,6 +1,8 @@
 #ifndef ZB_ARRAY_MANIPULATION_H
 #define ZB_ARRAY_MANIPULATION_H
 
+#include <stack>
+
 template <typename T>
 class ArrayManipulationAlgorithm {
 
@@ -377,7 +379,7 @@ public:
 
           if (i < mid && j < right) {
             // run the body of the loop
-            
+
             if (temp[i] <= temp[j]) {
               array[k++] = temp[i++];
             }
@@ -439,6 +441,171 @@ public:
 
   ~MergeSortAlgorithm() {
     delete[] temp;
+  }
+
+};
+
+template <typename T>
+class QuickSortAlgorithm : public ArrayManipulationAlgorithm<T> {
+
+private:
+  enum class AlgoState {
+    OUTER_LOOP,
+    PARTITION_LOOP,
+    RECURSION
+  };
+
+  struct StackFrame {
+    int low;
+    int high;
+
+    StackFrame(int low, int high) : low(low), high(high) {}
+    StackFrame() {}
+  };
+
+  std::stack<StackFrame> stack;
+  StackFrame current;
+  AlgoState state = AlgoState::OUTER_LOOP;
+  int pivot_value;
+  int pivot_position;
+  int i;
+  int j;
+
+  int array_size;
+  bool completed;
+
+public:
+  QuickSortAlgorithm(int array_size) : array_size(array_size), completed(array_size <= 1) {
+    stack.push(
+      StackFrame(0, array_size - 1)
+    );
+  }
+
+  void step(T* array) {
+
+    // quicksort:
+    /*
+      std::stack<StackFrame> stack;
+      stack.push(StackFrame(0, array_size - 1));
+
+      // --------------------------------
+      // label: AlgoState::OUTER_LOOP
+      // --------------------------------
+      while (!stack.empty()) {
+
+        StackFrame current = stack.top();
+        stack.pop();
+
+        // partition array
+        int pivot_value = array[current.high]; // let the last element be the pivot
+        int i = current.low - 1;
+        int j = current.low;
+
+        // --------------------------------
+        // label: AlgoState::PARTITION_LOOP
+        // --------------------------------
+        for (; j < current.high; j++) {
+          if (array[j] < pivot_value) {
+            i++;
+            std::swap(array[i], array[j]);
+          }
+        }
+
+        int pivot_position = i + 1;
+        
+        std::swap(array[i + 1], array[current.high]);
+
+        // --------------------------------
+        // label: AlgoState::RECURSION
+        // --------------------------------
+        // push sub-arrays onto the stack
+        if (current.low < pivot_position - 1) {
+          stack.push(StackFrame(current.low, pivot_position - 1));
+        }
+
+        if (pivot_position + 1 < current.high) {
+          stack.push(StackFrame(pivot_position + 1, current.high));
+        }
+      }
+    */
+
+    assert(!completed);
+    
+    while (true) {
+
+      switch (state) {
+
+        case AlgoState::OUTER_LOOP:
+
+          if (stack.empty()) {
+            completed = true;
+            return;
+          }
+
+          current = stack.top();
+          stack.pop();
+
+          pivot_value = array[current.high]; // let the last element be the pivot
+          i = current.low - 1;
+          j = current.low;
+
+          state = AlgoState::PARTITION_LOOP;
+
+          break;
+
+        case AlgoState::PARTITION_LOOP:
+
+          if (j < current.high) {
+            // run body of the loop
+
+            j++;
+
+            if (array[j - 1] < pivot_value) {
+              i++;
+              std::swap(array[i], array[j - 1]);
+              return; // since we changed an array element, the current step has ended
+            }
+
+          }
+          else {
+            // loop condition became false
+            pivot_position = i + 1;
+  
+            std::swap(array[i + 1], array[current.high]);
+
+            state = AlgoState::RECURSION;
+
+            return; // since we changed an array element, the current step has ended
+          }
+
+          break;
+
+        case AlgoState::RECURSION:
+
+          if (current.low < pivot_position - 1) {
+            stack.push(StackFrame(current.low, pivot_position - 1));
+          }
+
+          if (pivot_position + 1 < current.high) {
+            stack.push(StackFrame(pivot_position + 1, current.high));
+          }
+
+          state = AlgoState::OUTER_LOOP;
+
+          break;
+
+        default:
+          assert(false);
+          break;
+
+      }
+
+    }
+
+  }
+  
+  bool is_completed() {
+    return completed;
   }
 
 };
