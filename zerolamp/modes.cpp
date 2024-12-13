@@ -1,8 +1,9 @@
 #include "modes.h"
 #include "mode.h"
 #include "matrix.h"
-#include "mode_maze.h"
-#include "mode_simplex.h"
+// #include "mode_maze.h"
+// #include "mode_simplex.h"
+#include "mode_sort.h"
 
 // VectorQueue<LampMode*, MODES_QUEUE_SIZE> modes_queue;
 
@@ -13,15 +14,17 @@ unsigned long current_mode_bg_lastFrameRenderTime = 0;
 unsigned long current_mode_fg_lastFrameRenderTime = 0;
 
 int current_mode_fg_offset_x = 12;
-int current_mode_fg_viewport_width = 6;
+int current_mode_fg_viewport_width = 0;
 
 void modes_init() {
   // current_mode_bg = new FireMode();
   // current_mode_bg->enter(10, MATRIX_HEIGHT);
-  current_mode_bg = new SimplexMode();
-  current_mode_bg->enter(10, MATRIX_HEIGHT);
-  current_mode_fg = new MazeMode(10, 10);
-  current_mode_fg->enter(6, MATRIX_HEIGHT);
+  // current_mode_bg = new SimplexMode();
+  // current_mode_bg->enter(10, MATRIX_HEIGHT);
+  // current_mode_fg = new MazeMode(10, 10);
+  // current_mode_fg->enter(6, MATRIX_HEIGHT);
+  current_mode_bg = new SortMode();
+  current_mode_bg->enter(MATRIX_WIDTH, MATRIX_HEIGHT);
 }
 
 void modes_handle_command(String command) {
