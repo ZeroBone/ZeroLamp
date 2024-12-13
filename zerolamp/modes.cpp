@@ -1,7 +1,8 @@
 #include "modes.h"
 #include "mode.h"
 #include "matrix.h"
-#include "mode_sort.h"
+// #include "mode_sort.h"
+#include "mode_conway.h"
 
 // VectorQueue<LampMode*, MODES_QUEUE_SIZE> modes_queue;
 
@@ -21,7 +22,9 @@ void modes_init() {
   // current_mode_bg->enter(10, MATRIX_HEIGHT);
   // current_mode_fg = new MazeMode(10, 10);
   // current_mode_fg->enter(6, MATRIX_HEIGHT);
-  current_mode_bg = new SortMode();
+  // current_mode_bg = new SortMode();
+  // current_mode_bg->enter(MATRIX_WIDTH, MATRIX_HEIGHT);
+  current_mode_bg = new ConwayMode();
   current_mode_bg->enter(MATRIX_WIDTH, MATRIX_HEIGHT);
 }
 
