@@ -19,6 +19,9 @@ public:
   CommandHandleResult handle_command(String command);
   void handle_event(void* event);
 
+private:
+  int count_neighbors(int grid_x, int grid_y);
+
 };
 
 #endif
