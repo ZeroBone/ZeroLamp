@@ -1,8 +1,6 @@
 #include "modes.h"
 #include "mode.h"
 #include "matrix.h"
-// #include "mode_maze.h"
-// #include "mode_simplex.h"
 #include "mode_sort.h"
 
 // VectorQueue<LampMode*, MODES_QUEUE_SIZE> modes_queue;
