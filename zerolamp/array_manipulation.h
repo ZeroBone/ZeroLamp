@@ -610,4 +610,157 @@ public:
 
 };
 
+#define LEFT_CHILD_INDEX(i) ((i << 1) | 1)
+#define RIGHT_CHILD_INDEX(i) ((i << 1) + 2)
+#define PARENT_INDEX(i) ((i - 1) >> 1)
+
+template <typename T>
+class HeapSortAlgorithm : public ArrayManipulationAlgorithm<T> {
+
+private:
+
+  enum class AlgoState {
+    OUTER_LOOP,
+    SIFT_DOWN
+  };
+
+  int array_size;
+  bool completed;
+
+  int start;
+  int end;
+  int root;
+
+  AlgoState state = AlgoState::OUTER_LOOP;
+
+public:
+  HeapSortAlgorithm(int array_size) : array_size(array_size), completed(array_size <= 1), start(array_size >> 1), end(array_size) {}
+
+  void step(T* array) {
+
+    // heapsort:
+    /*
+      int start = array_size >> 1;
+      int end = array_size;
+
+      // --------------------------------
+      // label: AlgoState::OUTER_LOOP
+      // --------------------------------
+      while (end > 1) {
+
+        if (start > 0) {
+          // heap construction
+          start--;
+        }
+        else {
+          // heap extraction
+          end--;
+          std::swap(array[end], array[0]);
+        }
+
+        // sift down
+        int root = start;
+
+        // --------------------------------
+        // label: AlgoState::SIFT_DOWN
+        // --------------------------------
+        while (LEFT_CHILD_INDEX(root) < end) {
+          int child = LEFT_CHILD_INDEX(root);
+
+          // check whether there is a right child and that child is greater
+          if (child + 1 < end && array[child + 1] > array[child]) {
+            child++;
+          }
+
+          // array[child] is the greater child
+          // check whether it is also greater than the parent
+          if (array[child] > array[root]) {
+            std::swap(array[child], array[root]);
+            root = child; // continue sifting down the child
+          }
+          else {
+            break;
+          }
+        }
+      }
+    */
+
+    assert(!completed);
+
+    while (true) {
+
+      switch (state) {
+
+        case AlgoState::OUTER_LOOP:
+
+          if (end <= 1) {
+            // outer loop terminates
+            completed = true;
+            return;
+          }
+
+          state = AlgoState::SIFT_DOWN;
+
+          if (start > 0) {
+            // heap construction
+            start--;
+            root = start;
+          }
+          else {
+            // heap extraction
+            end--;
+            std::swap(array[end], array[0]);
+            root = start;
+            return; // since we changed an array element, the current step has ended
+          }
+
+          break;
+
+        case AlgoState::SIFT_DOWN:
+
+          if (LEFT_CHILD_INDEX(root) < end) {
+            // condition of the loop holds, run its body
+            int child = LEFT_CHILD_INDEX(root);
+
+            // check whether there is a right child and that child is greater
+            if (child + 1 < end && array[child + 1] > array[child]) {
+              child++;
+            }
+
+            // array[child] is the greater child
+            // check whether it is also greater than the parent
+            if (array[child] > array[root]) {
+              std::swap(array[child], array[root]);
+              root = child; // continue sifting down the child
+              return; // since we changed an array element, the current step has ended
+            }
+            else {
+              // break out of the loop
+              state = AlgoState::OUTER_LOOP;
+            }
+          }
+          else {
+            // the loop has finished executing
+            // return to the outer loop
+            state = AlgoState::OUTER_LOOP;
+          }
+
+          break;
+
+        default:
+          assert(false);
+          break;
+
+      }
+
+    }
+
+  }
+  
+  bool is_completed() {
+    return completed;
+  }
+
+};
+
 #endif

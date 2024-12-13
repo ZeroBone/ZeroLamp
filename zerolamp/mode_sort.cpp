@@ -156,8 +156,8 @@ void SortMode::handle_event(void* event) {
         delete sorting_algorithm;
       }
 
-      uint8_t new_sorting_algorithm_id = random8(5);
-      new_sorting_algorithm_id = 4; // TODO: remove this line
+      uint8_t new_sorting_algorithm_id = random8(6);
+      new_sorting_algorithm_id = 5; // TODO: remove this line
 
       switch (new_sorting_algorithm_id) {
         case 0: sorting_algorithm = new BubbleSortAlgorithm<uint8_t>(array_size); break;
@@ -165,6 +165,7 @@ void SortMode::handle_event(void* event) {
         case 2: sorting_algorithm = new SelectionSortAlgorithm<uint8_t>(array_size); break;
         case 3: sorting_algorithm = new MergeSortAlgorithm<uint8_t>(array_size); break;
         case 4: sorting_algorithm = new QuickSortAlgorithm<uint8_t>(array_size); break;
+        case 5: sorting_algorithm = new HeapSortAlgorithm<uint8_t>(array_size); break;
         default:
           assert(false);
           break;
