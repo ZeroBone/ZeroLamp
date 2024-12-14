@@ -108,7 +108,7 @@ void ConwayMode::render_frame(int offset_x, int offset_y, int viewport_width, in
   }
 
   // starting from which cell count do we consider the number of live cells to be small?
-  int few_cells_threshold = grid_width * grid_height / 3;
+  int few_cells_threshold = grid_width * grid_height / 8;
 
   if (live_cells_count <= few_cells_threshold) {
     // there are only few live cells
@@ -117,9 +117,13 @@ void ConwayMode::render_frame(int offset_x, int offset_y, int viewport_width, in
 
     if (random8() <= spawn_probability) {
       for (int i = 0; i < grid_width * grid_height; i++) {
-        // randomize the entry with probability 25%
+        if (next_grid[i]) {
+          continue;
+        }
+
+        // spawn a new cell with probability 25%
         if (random8(4) == i % 4) {
-          next_grid[i] = random8(2) == 1 ? true : false;
+          next_grid[i] = true;
         }
       }
     }
