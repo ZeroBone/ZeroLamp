@@ -15,13 +15,85 @@
 #include "mode_clock.h"
 
 std::unordered_map<std::string, Program> programs;
-std::string current_program = "fire";
+std::string current_program = "sort_fg";
 
 void modes_init() {
 
+  programs["sort"] = Program(
+    new SortMode(), // background
+    nullptr, // foreground
+    0, // foreground offset in the x direction
+    0 // foreground viewport width
+  );
+
+  programs["snowfall"] = Program(
+    new SnowfallMode(), // background
+    nullptr, // foreground
+    0, // foreground offset in the x direction
+    0 // foreground viewport width
+  );
+
+  programs["simplex"] = Program(
+    new SimplexMode(), // background
+    nullptr, // foreground
+    0, // foreground offset in the x direction
+    0 // foreground viewport width
+  );
+
+  programs["random"] = Program(
+    new RandomMode(), // background
+    nullptr, // foreground
+    0, // foreground offset in the x direction
+    0 // foreground viewport width
+  );
+
+  programs["rainbow"] = Program(
+    new RainbowMode(), // background
+    nullptr, // foreground
+    0, // foreground offset in the x direction
+    0 // foreground viewport width
+  );
+
   programs["fire"] = Program(
     new FireMode(), // background
+    nullptr, // foreground
+    0, // foreground offset in the x direction
+    0 // foreground viewport width
+  );
+
+  programs["conway"] = Program(
+    new ConwayMode(), // background
+    nullptr, // foreground
+    0, // foreground offset in the x direction
+    0 // foreground viewport width
+  );
+
+  // games
+
+  programs["clock_fire"] = Program(
+    new FireMode(), // background
     new ClockMode(), // foreground
+    6, // foreground offset in the x direction
+    6 // foreground viewport width
+  );
+
+  programs["snake_fire"] = Program(
+    new SnakeMode(), // background
+    new FireMode(), // foreground
+    6, // foreground offset in the x direction
+    6 // foreground viewport width
+  );
+
+  programs["maze_simplex"] = Program(
+    new SimplexMode(), // background
+    new MazeMode(10, 10), // foreground
+    6, // foreground offset in the x direction
+    6 // foreground viewport width
+  );
+
+  programs["sort_fg"] = Program(
+    new SimplexMode(), // background
+    new SortMode(), // foreground
     6, // foreground offset in the x direction
     6 // foreground viewport width
   );
@@ -29,6 +101,13 @@ void modes_init() {
 }
 
 void modes_handle_command(String command) {
+
+  // TODO: remove this shit
+  if (programs.find(command.c_str()) != programs.end()) {
+    std::string p(command.c_str());
+    current_program = p;
+  }
+
   programs[current_program].handle_command(command);
 }
 
