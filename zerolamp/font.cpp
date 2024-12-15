@@ -27,7 +27,7 @@ const uint8_t font3x5[][3] = {
   {0b00111, 0b00100, 0b11111}, // 4
   {0b10111, 0b10101, 0b11101}, // 5
   {0b11111, 0b10101, 0b11101}, // 6
-  {0b10001, 0b01001, 0b00111}, // 7
+  {0b00001, 0b00001, 0b11111}, // 7
   {0b11111, 0b10101, 0b11111}, // 8
   {0b10111, 0b10101, 0b11111}, // 9
   // ASCII 58-64
@@ -167,7 +167,7 @@ int draw_character(int start_x, int start_y, char c, int x_min, int x_max, CRGB 
 
 }
 
-int draw_string_horizontally(int start_x, int start_y, char* str, int x_min, int x_max, CRGB color, int space_between_letters) {
+int draw_string_horizontally(int start_x, int start_y, const char* const str, int x_min, int x_max, const CRGB* const color, int space_between_letters) {
   // start_x - x coordinate where to start rendering text (can be negative)
   // start_y - y coordinate where to start rendering text
   // str - string to draw
@@ -190,7 +190,7 @@ int draw_string_horizontally(int start_x, int start_y, char* str, int x_min, int
   int total_width = 0;
 
   for (size_t i = 0; str[i] != '\0'; i++) {
-    int width = draw_character(current_x, start_y, str[i], x_min, x_max, color);
+    int width = draw_character(current_x, start_y, str[i], x_min, x_max, color[i]);
     current_x += width + space_between_letters;
     total_width += width + space_between_letters;
   }

@@ -38,8 +38,11 @@ void ClockMode::render_frame(int offset_x, int offset_y, int viewport_width, int
     snprintf(minuteStr, sizeof(minuteStr), "%02d", cur_time->tm_min);
   }
 
-  draw_string_horizontally(offset_x, 2, hourStr, offset_x, offset_x + viewport_width - 1, CRGB::Green, 0);
-  draw_string_horizontally(offset_x, 9, minuteStr, offset_x, offset_x + viewport_width - 1, CRGB::Blue, 0);
+  CRGB hour_color[] = {CRGB::Green, CRGB::Yellow};
+  CRGB minute_color[] = {CRGB::Red, CRGB::Blue};
+
+  draw_string_horizontally(offset_x, 2, hourStr, offset_x, offset_x + viewport_width - 1, hour_color, 0);
+  draw_string_horizontally(offset_x, 9, minuteStr, offset_x, offset_x + viewport_width - 1, minute_color, 0);
 
 }
 
