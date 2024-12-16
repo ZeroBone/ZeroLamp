@@ -1,7 +1,7 @@
 #include "matrix.h"
 #include "wlan.h"
 #include "bluetooth.h"
-#include "modes.h"
+#include "programs.h"
 
 #include <FastLED.h>
 
@@ -11,18 +11,26 @@ void setup() {
 
   Serial.println("Initializing ZeroLamp...");
 
-  randomSeed((analogRead(0) + analogRead(1)) ^ 0xdeadbeef);
+  unsigned long seed = (analogRead(0) + analogRead(1)) ^ 0xdeadbeef;
+  randomSeed(seed);
+  random16_set_seed(~seed);
 
   bluetooth_init();
   matrix_init();
   wlan_init();
-  modes_init();
+  programs_init();
   
   Serial.println("ZeroLamp successfully initialized.");
+
 }
 
 void loop() {
+
   bluetooth_tick();
   wlan_tick();
-  modes_tick();
+  programs_tick();
+
+  // add 16-bit entropy from the slower random number generator to the faster one
+  random16_add_entropy(random(0x10000));
+
 }

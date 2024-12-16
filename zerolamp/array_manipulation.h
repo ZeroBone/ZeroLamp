@@ -73,6 +73,8 @@ public:
     //   }
     // }
 
+    // TODO: rewrite below logic to pointer-based execution machine
+
     assert(!completed);
 
     if (i >= array_size - 1) {
@@ -132,6 +134,8 @@ public:
       arr[j + 1] = key;
     }
     */
+
+    // TODO: rewrite below logic to pointer-based execution machine
 
     assert(!completed);
 

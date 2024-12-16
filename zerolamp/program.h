@@ -13,8 +13,14 @@ private:
   // std::vector<Instruction> instructions;
   // size_t instruction_pointer = 0; // pointer to the next instruction to be executed
 
-  // current state of the program
+  // pointer to background mode currently running
+  // nullptr means no background mode has been started
+  // the following invariants are to be maintained
+  // (IBG1) if bg != nullptr and fg_viewport_width != MATRIX_WIDTH then bg should be initialized (i.e., bg->enter() should have been called)
   LampMode* bg = nullptr;
+
+  // the following invariants are to be maintained
+  // (IFG1) if fg != nullptr and fg_viewport_width != 0 then fg should be initialized (i.e., fg->enter() should have been called)
   LampMode* fg = nullptr;
 
   unsigned long bg_lastFrameRenderTime = 0;
@@ -31,6 +37,7 @@ public:
     assert(fg_offset_x >= 0);
     assert(fg_viewport_width >= 0 && fg_viewport_width <= MATRIX_WIDTH);
 
+    // establish invariant (IBG1)
     if (bg != nullptr && fg_viewport_width != MATRIX_WIDTH) {
       // if the foreground mode is not fullscreen
       bg->enter(
@@ -39,6 +46,7 @@ public:
       );
     }
     
+    // establish invariant (IFG1)
     if (fg != nullptr && fg_viewport_width != 0) {
       fg->enter(
         fg_viewport_width, // logical width
@@ -48,22 +56,9 @@ public:
 
   }
 
-  ~Program() {
-
-    // TODO
-    
-    /*if (bg != nullptr) {
-      delete bg;
-    }
-    
-    if (fg != nullptr) {
-      delete fg;
-    }*/
-
-  }
-
   void tick();
   void handle_command(String command);
+  void destroy();
 
 private:
   void event_tick();

@@ -116,3 +116,13 @@ void Program::handle_command(String command) {
   bluetooth_serial()->println("Unknown command.");
 
 }
+
+void Program::destroy() {
+  if (bg != nullptr) {
+    delete bg;
+  }
+  
+  if (fg != nullptr) {
+    delete fg;
+  }
+}

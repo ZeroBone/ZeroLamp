@@ -1,6 +1,6 @@
 #include "bluetooth.h"
 #include <Arduino.h>
-#include "modes.h"
+#include "programs.h"
 
 #if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
 #error Bluetooth is not enabled!
@@ -41,7 +41,7 @@ void bluetooth_tick() {
   }
 
   if (reached_end && !bt_message.isEmpty()) {
-    modes_handle_command(bt_message);
+    programs_handle_command(bt_message);
     bt_message = "";
   }
 }

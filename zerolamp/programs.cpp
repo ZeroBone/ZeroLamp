@@ -1,4 +1,4 @@
-#include "modes.h"
+#include "programs.h"
 #include "program.h"
 #include <string>
 
@@ -14,10 +14,10 @@
 #include "mode_conway.h"
 #include "mode_clock.h"
 
-std::unordered_map<std::string, Program> programs;
+std::unordered_map<std::string, Program> programs; // programs that are currently loaded in memory and running
 std::string current_program = "sort_fg";
 
-void modes_init() {
+void programs_init() {
 
   programs["sort"] = Program(
     new SortMode(), // background
@@ -100,17 +100,20 @@ void modes_init() {
 
 }
 
-void modes_handle_command(String command) {
+void programs_handle_command(String command) {
 
-  // TODO: remove this shit
-  if (programs.find(command.c_str()) != programs.end()) {
-    std::string p(command.c_str());
-    current_program = p;
+  if (command.startsWith("p")) {
+
+    String program_name = command.substring(1);
+    program_name.trim();
+
+    // TODO
+
   }
 
   programs[current_program].handle_command(command);
 }
 
-void modes_tick() {
+void programs_tick() {
   programs[current_program].tick();
 }
