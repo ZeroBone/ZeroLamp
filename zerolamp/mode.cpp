@@ -1,4 +1,5 @@
 #include "mode.h"
+#include <Arduino.h>
 
 unsigned long LampMode::get_render_interval() {
 

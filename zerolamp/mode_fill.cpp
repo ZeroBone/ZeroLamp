@@ -19,7 +19,7 @@ void FillMode::render_frame(int offset_x, int offset_y, int viewport_width, int 
   }
 }
 
-CommandHandleResult FillMode::handle_command(String command) {
+CommandHandleResult FillMode::handle_command(std::string command) {
   return CommandHandleResult::NOT_HANDLED;
 }
 

@@ -219,9 +219,9 @@ void SnakeMode::render_frame(int offset_x, int offset_y, int viewport_width, int
 
 }
 
-CommandHandleResult SnakeMode::handle_command(String command) {
+CommandHandleResult SnakeMode::handle_command(std::string command) {
 
-  if (command.equalsIgnoreCase("w")) {
+  if (command == "w") {
     if (movement_direction != SnakeDirection::DOWN) {
       bluetooth_serial()->println("Snake moves up.");
       movement_direction = SnakeDirection::UP;
@@ -232,7 +232,7 @@ CommandHandleResult SnakeMode::handle_command(String command) {
     return CommandHandleResult::HANDLED;
   }
 
-  if (command.equalsIgnoreCase("s")) {
+  if (command == "s") {
     if (movement_direction != SnakeDirection::UP) {
       bluetooth_serial()->println("Snake moves down.");
       movement_direction = SnakeDirection::DOWN;
@@ -243,7 +243,7 @@ CommandHandleResult SnakeMode::handle_command(String command) {
     return CommandHandleResult::HANDLED;
   }
 
-  if (command.equalsIgnoreCase("a")) {
+  if (command == "a") {
     if (movement_direction != SnakeDirection::RIGHT) {
       bluetooth_serial()->println("Snake moves left.");
       movement_direction = SnakeDirection::LEFT;
@@ -254,7 +254,7 @@ CommandHandleResult SnakeMode::handle_command(String command) {
     return CommandHandleResult::HANDLED;
   }
 
-  if (command.equalsIgnoreCase("d")) {
+  if (command == "d") {
     if (movement_direction != SnakeDirection::LEFT) {
       bluetooth_serial()->println("Snake moves right.");
       movement_direction = SnakeDirection::RIGHT;

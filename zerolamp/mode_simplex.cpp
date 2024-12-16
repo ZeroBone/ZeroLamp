@@ -74,7 +74,7 @@ void SimplexMode::render_frame(int offset_x, int offset_y, int viewport_width, i
   }
 }
 
-CommandHandleResult SimplexMode::handle_command(String command) {
+CommandHandleResult SimplexMode::handle_command(std::string command) {
   return CommandHandleResult::NOT_HANDLED;
 }
 

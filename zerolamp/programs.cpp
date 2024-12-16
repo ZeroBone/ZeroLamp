@@ -1,6 +1,5 @@
 #include "programs.h"
 #include "program.h"
-#include <string>
 
 #include "mode_sort.h"
 #include "mode_snowfall.h"
@@ -100,18 +99,8 @@ void programs_init() {
 
 }
 
-void programs_handle_command(String command) {
-
-  if (command.startsWith("p")) {
-
-    String program_name = command.substring(1);
-    program_name.trim();
-
-    // TODO
-
-  }
-
-  programs[current_program].handle_command(command);
+void programs_handle_command(std::string command) {
+  programs[current_program].handle_command(std::move(command));
 }
 
 void programs_tick() {

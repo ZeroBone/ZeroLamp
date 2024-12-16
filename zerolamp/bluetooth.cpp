@@ -1,6 +1,7 @@
 #include "bluetooth.h"
-#include <Arduino.h>
 #include "programs.h"
+
+#include <sstream>
 
 #if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
 #error Bluetooth is not enabled!
@@ -9,6 +10,7 @@
 BluetoothSerial SerialBT;
 
 void bluetooth_init() {
+
   SerialBT.begin("ZeroLamp", false, true);
   // SerialBT.deleteAllBondedDevices();
 
@@ -17,15 +19,20 @@ void bluetooth_init() {
 
 }
 
-String bt_message = "";
-
 void bluetooth_tick() {
 
-  bool reached_end = false;
+  if (!SerialBT.available()) {
+    return;
+  }
 
-  while (SerialBT.available()) {
+  int read_iterations = 0;
+  bool reached_end = false;
+  std::ostringstream bt_stream;
+
+  do {
 
     char c = SerialBT.read();
+    read_iterations++;
 
     if (c == '\r') {
       continue;
@@ -36,14 +43,15 @@ void bluetooth_tick() {
       break;
     }
     
-    bt_message += String(c);
+    bt_stream.put(c);
     
+  } while (SerialBT.available() && read_iterations < MAX_READ_ITERATIONS_PER_TICK);
+
+  if (reached_end) {
+    std::string bt_message = bt_stream.str();
+    programs_handle_command(std::move(bt_message));
   }
 
-  if (reached_end && !bt_message.isEmpty()) {
-    programs_handle_command(bt_message);
-    bt_message = "";
-  }
 }
 
 BluetoothSerial* bluetooth_serial() {

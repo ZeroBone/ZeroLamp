@@ -1,6 +1,7 @@
 #include "program.h"
 #include "bluetooth.h"
 #include <FastLED.h>
+#include <Arduino.h>
 
 void Program::tick() {
   event_tick();
@@ -93,7 +94,7 @@ void Program::render_tick() {
   FastLED.show();
 }
 
-void Program::handle_command(String command) {
+void Program::handle_command(std::string command) {
 
   CommandHandleResult hr;
 
@@ -113,7 +114,7 @@ void Program::handle_command(String command) {
   }
 
   // tell the user that they sent an unknown command
-  bluetooth_serial()->println("Unknown command.");
+  bluetooth_serial()->println("Unknown command or invalid syntax.");
 
 }
 

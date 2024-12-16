@@ -22,7 +22,7 @@ void RainbowMode::render_frame(int offset_x, int offset_y, int viewport_width, i
   hue++;
 }
 
-CommandHandleResult RainbowMode::handle_command(String command) {
+CommandHandleResult RainbowMode::handle_command(std::string command) {
   return CommandHandleResult::NOT_HANDLED;
 }
 

@@ -1,7 +1,6 @@
 #ifndef ZB_PROGRAM_H
 #define ZB_PROGRAM_H
 
-#include <Arduino.h>
 #include "instruction.h"
 #include "mode.h"
 #include "matrix.h"
@@ -57,7 +56,7 @@ public:
   }
 
   void tick();
-  void handle_command(String command);
+  void handle_command(std::string command);
   void destroy();
 
 private:

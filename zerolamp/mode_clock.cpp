@@ -46,7 +46,7 @@ void ClockMode::render_frame(int offset_x, int offset_y, int viewport_width, int
 
 }
 
-CommandHandleResult ClockMode::handle_command(String command) {
+CommandHandleResult ClockMode::handle_command(std::string command) {
   return CommandHandleResult::NOT_HANDLED;
 }
 

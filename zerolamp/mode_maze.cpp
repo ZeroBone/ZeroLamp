@@ -348,15 +348,15 @@ void MazeMode::render_frame(int offset_x, int offset_y, int viewport_width, int 
 #define MODE_MAZE_PLAYER_MOVEMENT_COMPLETION_TIMEOUT 300
 #define MODE_MAZE_EVENT_COMPLETE_MOVEMENT_OF_PLAYER nullptr
 
-CommandHandleResult MazeMode::handle_command(String command) {
+CommandHandleResult MazeMode::handle_command(std::string command) {
 
   assert(player_x >= 0 && player_y >= 0);
   assert(player_x < maze_width && player_y < maze_height);
 
-  bool player_wants_to_move_up = command.equalsIgnoreCase("w");
-  bool player_wants_to_move_down = command.equalsIgnoreCase("s");
-  bool player_wants_to_move_left = command.equalsIgnoreCase("a");
-  bool player_wants_to_move_right = command.equalsIgnoreCase("d");
+  bool player_wants_to_move_up = command == "w";
+  bool player_wants_to_move_down = command == "s";
+  bool player_wants_to_move_left = command == "a";
+  bool player_wants_to_move_right = command == "d";
 
   bool player_is_moving = player_state != PlayerState::NOT_MOVING;
 

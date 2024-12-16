@@ -1,7 +1,8 @@
 #ifndef ZB_MODE_H
 #define ZB_MODE_H
 
-#include <Arduino.h>
+#include <vector>
+#include <string>
 
 enum class CommandHandleResult {
   HANDLED,
@@ -36,7 +37,7 @@ public:
 
   virtual void render_frame(int offset_x, int offset_y, int viewport_width, int viewport_height) = 0;
 
-  virtual CommandHandleResult handle_command(String command) = 0;
+  virtual CommandHandleResult handle_command(std::string command) = 0;
 
   virtual void handle_event(void* event) = 0;
 
