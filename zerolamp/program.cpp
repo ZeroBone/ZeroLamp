@@ -3,12 +3,12 @@
 #include <FastLED.h>
 #include <Arduino.h>
 
-void Program::tick() {
+void ProgramExecutor::tick() {
   event_tick();
   render_tick();
 }
 
-void Program::event_tick() {
+void ProgramExecutor::event_tick() {
   // fire events if needed
   if (bg != nullptr) {
     bg->event_tick();
@@ -19,7 +19,7 @@ void Program::event_tick() {
   }
 }
 
-void Program::render_tick() {
+void ProgramExecutor::render_tick() {
   // render frames
 
   unsigned long current_time = millis();
@@ -118,7 +118,7 @@ void Program::handle_command(std::string command) {
 
 }
 
-void Program::destroy() {
+void ProgramExecutor::destroy() {
   if (bg != nullptr) {
     delete bg;
   }

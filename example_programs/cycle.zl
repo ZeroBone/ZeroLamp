@@ -1,0 +1,58 @@
+
+loop nice_mood {
+    rainbow 1m;
+    fire 30s;
+    game_of_life 1m;
+}
+
+loop weather {
+    weather_today 1m;
+    weather_tomorrow 1m;
+}
+
+loop test {
+    run nice_mood 5;
+    run weather 1;
+}
+
+foreground loop games {
+    snake;
+    maze;
+}
+
+hot_weather: fire 5s, lava 5s then repeat;
+cold_weather: snowfall 10s then repeat;
+
+on weather if temperature < 10 {
+    if (temperature_outside < 10)
+}
+
+on bluetooth_connected {
+
+}
+
+on wifi_connected {
+
+}
+
+on time_available {
+    foreground clock;
+    if time_hours_24 >= 22 && time_hours_24 < 6 {
+        background stars;
+    }
+    else {
+        background fire;
+    }
+}
+
+if weather is hot {
+
+}
+
+on weather {
+    
+}
+
+on time(20ms) {
+    
+}

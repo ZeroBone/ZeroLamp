@@ -5,7 +5,7 @@
 #include "mode.h"
 #include "matrix.h"
 
-class Program {
+class ProgramExecutor {
 
 private:
   // program
@@ -30,9 +30,9 @@ private:
 
 public:
 
-  Program() {}
+  ProgramExecutor() {}
 
-  Program(LampMode* bg, LampMode* fg, int fg_offset_x, int fg_viewport_width) : bg(bg), fg(fg), fg_offset_x(fg_offset_x), fg_viewport_width(fg_viewport_width) {
+  ProgramExecutor(LampMode* bg, LampMode* fg, int fg_offset_x, int fg_viewport_width) : bg(bg), fg(fg), fg_offset_x(fg_offset_x), fg_viewport_width(fg_viewport_width) {
     assert(fg_offset_x >= 0);
     assert(fg_viewport_width >= 0 && fg_viewport_width <= MATRIX_WIDTH);
 

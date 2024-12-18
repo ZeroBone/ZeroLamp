@@ -1,0 +1,22 @@
+fn param() {
+
+}
+
+on time_available {
+    fg clock; // pushes clock onto the stack
+    bg stars if time_hours_24 >= 22 && time_hours_24 < 6;
+    bg rainbow if time_hours_24 >= 19 && time_hours_24 < 22;
+    bg fire;
+}
+
+on every(20s) {
+
+}
+
+on user_idle(5m) {
+
+}
+
+on bluetooth_message {
+
+}
