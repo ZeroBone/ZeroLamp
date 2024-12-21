@@ -1,5 +1,5 @@
 #include "bluetooth.h"
-#include "programs.h"
+#include "program_controller.h"
 
 #include <sstream>
 
@@ -49,7 +49,7 @@ void bluetooth_tick() {
 
   if (reached_end) {
     std::string bt_message = bt_stream.str();
-    programs_handle_command(std::move(bt_message));
+    program_controller_handle_command(std::move(bt_message));
   }
 
 }

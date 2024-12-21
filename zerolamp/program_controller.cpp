@@ -1,4 +1,4 @@
-#include "programs.h"
+#include "program_controller.h"
 #include "program_executor.h"
 #include <unordered_map>
 
@@ -17,7 +17,7 @@
 std::unordered_map<std::string, ProgramExecutor> programs; // programs that are currently loaded in memory and running
 std::string current_program = "sort_fg";
 
-void programs_init() {
+void program_controller_init() {
 
   programs["sort"] = ProgramExecutor(
     new SortMode(), // background
@@ -100,10 +100,10 @@ void programs_init() {
 
 }
 
-void programs_handle_command(std::string command) {
+void program_controller_handle_command(std::string command) {
   programs[current_program].handle_command(std::move(command));
 }
 
-void programs_tick() {
+void program_controller_tick() {
   programs[current_program].tick();
 }

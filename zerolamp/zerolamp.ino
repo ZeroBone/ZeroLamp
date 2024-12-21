@@ -1,7 +1,7 @@
 #include "matrix.h"
 #include "wlan.h"
 #include "bluetooth.h"
-#include "programs.h"
+#include "program_controller.h"
 
 #include <FastLED.h>
 
@@ -18,7 +18,7 @@ void setup() {
   bluetooth_init();
   matrix_init();
   wlan_init();
-  programs_init();
+  program_controller_init();
   
   Serial.println("ZeroLamp successfully initialized.");
 
@@ -28,7 +28,7 @@ void loop() {
 
   bluetooth_tick();
   wlan_tick();
-  programs_tick();
+  program_controller_tick();
 
   // add 16-bit entropy from the slower random number generator to the faster one
   random16_add_entropy(random(0x10000));
