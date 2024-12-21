@@ -4,13 +4,13 @@
 #include "instruction.h"
 #include "mode.h"
 #include "matrix.h"
+#include "program.h"
 
 class ProgramExecutor {
 
 private:
   // program
-  // std::vector<Instruction> instructions;
-  // size_t instruction_pointer = 0; // pointer to the next instruction to be executed
+  Program program;
 
   // pointer to background mode currently running
   // nullptr means no background mode has been started
