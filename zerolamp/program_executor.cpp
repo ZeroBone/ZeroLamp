@@ -1,4 +1,4 @@
-#include "program.h"
+#include "program_executor.h"
 #include "bluetooth.h"
 #include <FastLED.h>
 #include <Arduino.h>
@@ -94,7 +94,7 @@ void ProgramExecutor::render_tick() {
   FastLED.show();
 }
 
-void Program::handle_command(std::string command) {
+void ProgramExecutor::handle_command(std::string command) {
 
   CommandHandleResult hr;
 

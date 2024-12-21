@@ -1,5 +1,6 @@
 #include "programs.h"
-#include "program.h"
+#include "program_executor.h"
+#include <unordered_map>
 
 #include "mode_sort.h"
 #include "mode_snowfall.h"
@@ -13,54 +14,54 @@
 #include "mode_conway.h"
 #include "mode_clock.h"
 
-std::unordered_map<std::string, Program> programs; // programs that are currently loaded in memory and running
+std::unordered_map<std::string, ProgramExecutor> programs; // programs that are currently loaded in memory and running
 std::string current_program = "sort_fg";
 
 void programs_init() {
 
-  programs["sort"] = Program(
+  programs["sort"] = ProgramExecutor(
     new SortMode(), // background
     nullptr, // foreground
     0, // foreground offset in the x direction
     0 // foreground viewport width
   );
 
-  programs["snowfall"] = Program(
+  programs["snowfall"] = ProgramExecutor(
     new SnowfallMode(), // background
     nullptr, // foreground
     0, // foreground offset in the x direction
     0 // foreground viewport width
   );
 
-  programs["simplex"] = Program(
+  programs["simplex"] = ProgramExecutor(
     new SimplexMode(), // background
     nullptr, // foreground
     0, // foreground offset in the x direction
     0 // foreground viewport width
   );
 
-  programs["random"] = Program(
+  programs["random"] = ProgramExecutor(
     new RandomMode(), // background
     nullptr, // foreground
     0, // foreground offset in the x direction
     0 // foreground viewport width
   );
 
-  programs["rainbow"] = Program(
+  programs["rainbow"] = ProgramExecutor(
     new RainbowMode(), // background
     nullptr, // foreground
     0, // foreground offset in the x direction
     0 // foreground viewport width
   );
 
-  programs["fire"] = Program(
+  programs["fire"] = ProgramExecutor(
     new FireMode(), // background
     nullptr, // foreground
     0, // foreground offset in the x direction
     0 // foreground viewport width
   );
 
-  programs["conway"] = Program(
+  programs["conway"] = ProgramExecutor(
     new ConwayMode(), // background
     nullptr, // foreground
     0, // foreground offset in the x direction
@@ -69,28 +70,28 @@ void programs_init() {
 
   // games
 
-  programs["clock_fire"] = Program(
+  programs["clock_fire"] = ProgramExecutor(
     new FireMode(), // background
     new ClockMode(), // foreground
     6, // foreground offset in the x direction
     6 // foreground viewport width
   );
 
-  programs["snake_fire"] = Program(
+  programs["snake_fire"] = ProgramExecutor(
     new SnakeMode(), // background
     new FireMode(), // foreground
     6, // foreground offset in the x direction
     6 // foreground viewport width
   );
 
-  programs["maze_simplex"] = Program(
+  programs["maze_simplex"] = ProgramExecutor(
     new SimplexMode(), // background
     new MazeMode(10, 10), // foreground
     6, // foreground offset in the x direction
     6 // foreground viewport width
   );
 
-  programs["sort_fg"] = Program(
+  programs["sort_fg"] = ProgramExecutor(
     new SimplexMode(), // background
     new SortMode(), // foreground
     6, // foreground offset in the x direction

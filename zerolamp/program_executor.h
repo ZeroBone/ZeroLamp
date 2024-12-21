@@ -1,5 +1,5 @@
-#ifndef ZB_PROGRAM_H
-#define ZB_PROGRAM_H
+#ifndef ZB_PROGRAM_EXECUTOR_H
+#define ZB_PROGRAM_EXECUTOR_H
 
 #include "instruction.h"
 #include "mode.h"
