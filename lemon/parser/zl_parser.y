@@ -11,12 +11,13 @@
 
 %include {
 #include "token.h"
+#include "ast.h"
 
 // we will not call free with a null pointer, turn off the guard
 #define YYPARSEFREENEVERNULL 1
 }
 
-%extra_context {parser_context_t* context}
+// %extra_context {parser_context_t* context}
 
 %syntax_error {
     parser_onSyntaxError(context, &TOKEN);
@@ -48,22 +49,8 @@
 // terminals -> all uppercase
 // non terminals -> all lowercase
 
-root ::= definition_list.
-
-%type definition_list {std::vector<DefinitionNode*>}
-definition_list ::= . {}
-definition_list ::= definition_list(DL) definition(D). { DL.push_back(D); }
-
-// function definition
-%type definition {DefinitionNode*}
-definition(D) ::= FN ID LEFT_BRACE statement_list(SL) RIGHT_BRACE. { D = new FunctionDefinitionNode(SL); }
-definition(D) ::= FN ID LEFT_PARENTHESIS RIGHT_PARENTHESIS LEFT_BRACE statement_list(SL) RIGHT_BRACE. { D = new FunctionDefinitionNode(SL); }
-definition(D) ::= FN ID LEFT_PARENTHESIS formal_parameters(FP) RIGHT_PARENTHESIS LEFT_BRACE statement_list(SL) RIGHT_BRACE. { D = new FunctionDefinitionNode(FP, SL); }
-
-// event handler definition
-definition(D) ::= ON ID LEFT_BRACE statement_list(SL) RIGHT_BRACE. { D = new EventHandlerDefinitionNode(SL); }
-definition(D) ::= ON ID LEFT_PARENTHESIS RIGHT_PARENTHESIS LEFT_BRACE statement_list(SL) RIGHT_BRACE. { D = new EventHandlerDefinitionNode(SL); }
-definition(D) ::= ON ID LEFT_PARENTHESIS actual_parameters(AP) RIGHT_PARENTHESIS LEFT_BRACE statement_list(SL) RIGHT_BRACE. { D = EventHandlerDefinitionNode(AP, SL); }
+%type root {RootNode*}
+root(R) ::= statement_list(SL). { R = new RootNode(std::move(SL)); }
 
 %type formal_parameters {std::vector<std::string>}
 formal_parameters(FPS) ::= ID(NAME). { std::vector<std::string> v; v.push_back(NAME); FPS = std::move(v); }
@@ -82,8 +69,19 @@ statement_list(SL) ::= . { std::vector<StatementNode*> v; SL = std::move(v); }
 statement_list(SL_NEW) ::= statement_list(SL) statement(S). { SL.push_back(S); SL_NEW = std::move(SL); }
 
 // statements
-// function call
 %type statement {StatementNode*}
+
+// function statement
+statement(S) ::= FN ID LEFT_BRACE statement_list(SL) RIGHT_BRACE. { S = new FunctionDefinitionNode(SL); }
+statement(S) ::= FN ID LEFT_PARENTHESIS RIGHT_PARENTHESIS LEFT_BRACE statement_list(SL) RIGHT_BRACE. { S = new FunctionDefinitionNode(SL); }
+statement(S) ::= FN ID LEFT_PARENTHESIS formal_parameters(FP) RIGHT_PARENTHESIS LEFT_BRACE statement_list(SL) RIGHT_BRACE. { S = new FunctionDefinitionNode(FP, SL); }
+
+// event handler statement
+statement(S) ::= ON ID LEFT_BRACE statement_list(SL) RIGHT_BRACE. { S = new EventHandlerDefinitionNode(SL); }
+statement(S) ::= ON ID LEFT_PARENTHESIS RIGHT_PARENTHESIS LEFT_BRACE statement_list(SL) RIGHT_BRACE. { S = new EventHandlerDefinitionNode(SL); }
+statement(S) ::= ON ID LEFT_PARENTHESIS actual_parameters(AP) RIGHT_PARENTHESIS LEFT_BRACE statement_list(SL) RIGHT_BRACE. { S = EventHandlerDefinitionNode(AP, SL); }
+
+// function call
 statement(S) ::= ID(FUNCTION_NAME) LEFT_PARENTHESIS RIGHT_PARENTHESIS. { S = new FunctionCallStatementNode(FUNCTION_NAME); }
 statement(S) ::= ID(FUNCTION_NAME) LEFT_PARENTHESIS actual_parameters(APS) RIGHT_PARENTHESIS. { S = new FunctionCallStatementNode(FUNCTION_NAME, APS); }
 

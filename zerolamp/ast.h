@@ -10,52 +10,15 @@ class AstNode {
 class RootNode : public AstNode {
 
 public:
-  std::vector<Definition*> definition_list;
+  std::vector<StatementNode*> statements;
 
-  RootNode() {}
+  RootNode(std::vector<StatementNode*> statements) : statements(statements) {}
 
   ~RootNode() {
-    for (Definition d : definition_list) {
-      delete d;
-    }
-  }
-};
-
-// abstract base class for all definitions
-class DefinitionNode : public AstNode {};
-
-class FunctionDefinitionNode : public DefinitionNode {
-
-public:
-  std::vector<std::string> formal_parameters;
-  std::vector<StatementNode*> body;
-
-public:
-
-  FunctionDefinitionNode(std::vector<std::string> formal_parameters, std::vector<StatementNode*> body) : 
-    formal_parameters(formal_parameters), body(body) {}
-
-  FunctionDefinitionNode(std::vector<StatementNode*> body) : body(body) {}
-
-  ~FunctionDefinitionNode() {
-    for (StatementNode* s : body) {
+    for (StatementNode* s : statements) {
       delete s;
     }
   }
-
-};
-
-class EventHandlerDefinitionNode : public DefinitionNode {
-
-public:
-  std::vector<ActualParameterNode*> actual_parameters;
-  std::vector<StatementNode*> body;
-
-  EventHandlerDefinitionNode(std::vector<ActualParameterNode*> actual_parameters, std::vector<StatementNode*> body) : 
-    actual_parameters(actual_parameters), body(body) {}
-
-  EventHandlerDefinitionNode(std::vector<StatementNode*> body) : body(body) {}
-  
 };
 
 class ActualParameterNode : public AstNode {
@@ -76,6 +39,40 @@ public:
 
 // abstract base class for all statements
 class StatementNode : public AstNode {}
+
+class FunctionDefinitionNode : public StatementNode {
+
+public:
+  std::vector<std::string> formal_parameters;
+  std::vector<StatementNode*> body;
+
+public:
+
+  FunctionDefinitionNode(std::vector<std::string> formal_parameters, std::vector<StatementNode*> body) : 
+    formal_parameters(formal_parameters), body(body) {}
+
+  FunctionDefinitionNode(std::vector<StatementNode*> body) : body(body) {}
+
+  ~FunctionDefinitionNode() {
+    for (StatementNode* s : body) {
+      delete s;
+    }
+  }
+
+};
+
+class EventHandlerDefinitionNode : public StatementNode {
+
+public:
+  std::vector<ActualParameterNode*> actual_parameters;
+  std::vector<StatementNode*> body;
+
+  EventHandlerDefinitionNode(std::vector<ActualParameterNode*> actual_parameters, std::vector<StatementNode*> body) : 
+    actual_parameters(actual_parameters), body(body) {}
+
+  EventHandlerDefinitionNode(std::vector<StatementNode*> body) : body(body) {}
+  
+};
 
 class FunctionCallStatementNode : public StatementNode {
 

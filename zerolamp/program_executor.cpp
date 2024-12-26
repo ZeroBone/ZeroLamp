@@ -3,6 +3,66 @@
 #include <FastLED.h>
 #include <Arduino.h>
 
+
+void ProgramExecutor::set_background(LampMode* new_bg) {
+
+  // step 1: destroy old background
+  if (bg != nullptr) {
+    bg->leave();
+    delete bg;
+  }
+
+  // step 2: install new background
+  bg = new_bg;
+  establish_ibg1();
+
+}
+
+void ProgramExecutor::set_foreground(LampMode* new_fg) {
+
+  // step 1: destroy old foreground
+  if (fg != nullptr) {
+    fg->leave();
+    delete fg;
+  }
+
+  // step 2: install new foreground
+  fg = new_fg;
+  establish_ifg1();
+
+}
+
+void ProgramExecutor::set_foreground_viewport_width(int new_fg_viewport_width) {
+
+  assert(new_fg_viewport_width >= 0);
+  assert(new_fg_viewport_width <= MATRIX_WIDTH);
+
+  if (fg_viewport_width == new_fg_viewport_width) {
+    return;
+  }
+
+  fg_viewport_width = new_fg_viewport_width;
+
+  establish_ifg1();
+
+  if (fg_viewport_width == MATRIX_WIDTH && bg != nullptr) {
+    bg->leave();
+  }
+
+  if (fg != nullptr && fg_viewport_width > fg_logical_width) {
+    fg->leave();
+    fg->enter(fg_viewport_width, MATRIX_HEIGHT);
+    fg_logical_width = fg_viewport_width;
+  }
+
+  if (bg != nullptr && MATRIX_WIDTH - fg_viewport_width > bg_logical_width) {
+    bg->leave();
+    bg->enter(MATRIX_WIDTH - fg_viewport_width, MATRIX_HEIGHT);
+    bg_logical_width = MATRIX_WIDTH - fg_viewport_width;
+  }
+
+}
+
 void ProgramExecutor::tick() {
   event_tick();
   render_tick();
