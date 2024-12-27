@@ -2,6 +2,7 @@
 #include "program_executor.h"
 #include "bluetooth.h"
 // #include <unordered_map>
+#include "lexer.h"
 #include "parser.h"
 
 #include "mode_sort.h"
@@ -101,7 +102,8 @@ bool on = true;
 
 void program_controller_handle_command(std::string command) {
 
-  ZeroLampParser parser;
+  Lexer lexer(command);
+  Parser parser;
 
   if (parser.successfullyParsed()) {
     bluetooth_serial()->println("Success.");

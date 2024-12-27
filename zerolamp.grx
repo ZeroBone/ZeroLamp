@@ -1,4 +1,4 @@
-%name ZeroLampParser
+%name Parser
 %algo SLR
 %target cpp
 

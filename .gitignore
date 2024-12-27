@@ -32,5 +32,5 @@
 *.app
 
 # Grammax
-ZeroLampParser.h
-ZeroLampParser_debug.txt
+Parser.h
+Parser_debug.txt
