@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+# Grammax
+ZeroLampParser.h
+ZeroLampParser_debug.txt

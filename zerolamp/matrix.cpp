@@ -10,6 +10,9 @@ void matrix_init() {
     FastLED.setMaxPowerInVoltsAndMilliamps(5, CURRENT_LIMIT);
   }
   FastLED.setCorrection(TypicalLEDStrip);
+
+  // optional: clear all led's to ensure that they don't continue representing the state after the firmware stopped or crashed
+  FastLED.clear(true);
 }
 
 inline int ledId(int y, int x) {

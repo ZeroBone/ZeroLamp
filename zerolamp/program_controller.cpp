@@ -2,6 +2,7 @@
 #include "program_executor.h"
 #include "bluetooth.h"
 // #include <unordered_map>
+#include "parser.h"
 
 #include "mode_sort.h"
 #include "mode_snowfall.h"
@@ -99,6 +100,17 @@ LampMode* initialize_mode(std::string mode_name) {
 bool on = true;
 
 void program_controller_handle_command(std::string command) {
+
+  ZeroLampParser parser;
+
+  if (parser.successfullyParsed()) {
+    bluetooth_serial()->println("Success.");
+  }
+  else {
+    bluetooth_serial()->println("Error.");
+  }
+
+  // TODO: remove old controller
 
   if (command == "on" && !on) {
     on = true;

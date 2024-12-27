@@ -2,10 +2,16 @@
 #define ZB_AST_H
 
 class AstNode {
-
+public:
   virtual ~AstNode() {}
 
 };
+
+// abstract base class for all statements
+class StatementNode : public AstNode {};
+
+// abstract base class for all expressions
+class ExpressionNode : public AstNode {};
 
 class RootNode : public AstNode {
 
@@ -36,9 +42,6 @@ public:
   }
 
 };
-
-// abstract base class for all statements
-class StatementNode : public AstNode {}
 
 class FunctionDefinitionNode : public StatementNode {
 
@@ -74,17 +77,6 @@ public:
   
 };
 
-class FunctionCallStatementNode : public StatementNode {
-
-public:
-  std::string name; // function name
-  std::vector<ActualParameterNode*> parameters;
-
-  FunctionCallStatementNode(std::string name, std::vector<ActualParameterNode*> parameters) : name(name), parameters(parameters) {}
-  FunctionCallStatementNode(std::string name) : name(name) {}
-
-};
-
 class PushStatementNode : public StatementNode {
 
 public:
@@ -96,9 +88,14 @@ public:
 
 };
 
-// abstract base class for all expressions
+class ExpressionStatementNode : public StatementNode {
 
-class ExpressionNode : public AstNode {};
+public:
+  ExpressionNode* expression;
+
+  ExpressionStatementNode(ExpressionNode* expression) : expression(expression) {}
+
+};
 
 // simple expressions
 
@@ -111,25 +108,25 @@ public:
 class IntLiteralExpressionNode : public ExpressionNode {
 public:
   uint32_t value;
-  IdExpressionNode(std::string value) : value(value) {}
+  IntLiteralExpressionNode(uint32_t value) : value(value) {}
 };
 
 class FloatLiteralExpressionNode : public ExpressionNode {
 public:
   double value;
-  IdExpressionNode(double value) : value(value) {}
+  FloatLiteralExpressionNode(double value) : value(value) {}
 };
 
 class StringLiteralExpressionNode : public ExpressionNode {
 public:
   std::string value;
-  IdExpressionNode(std::string value) : value(value) {}
+  StringLiteralExpressionNode(std::string value) : value(value) {}
 };
 
 class BooleanLiteralExpressionNode : public ExpressionNode {
 public:
   bool value;
-  IdExpressionNode(bool value) : value(value) {}
+  BooleanLiteralExpressionNode(bool value) : value(value) {}
 };
 
 // postfix
@@ -143,15 +140,17 @@ public:
 
 class FunctionCallExpressionNode : public ExpressionNode {
 public:
+  ExpressionNode* function_name;
   std::vector<ActualParameterNode*> actual_parameters;
-  FunctionCallExpressionNode() {}
+  FunctionCallExpressionNode(ExpressionNode* function_name, std::vector<ActualParameterNode*> actual_parameters) : function_name(std::move(function_name)), actual_parameters(actual_parameters) {}
+  FunctionCallExpressionNode(ExpressionNode* function_name) : function_name(std::move(function_name)) {}
 };
 
 class MemberAccessExpressionNode : public ExpressionNode {
 public:
   ExpressionNode* base;
   std::string member_name;
-  MemberAccessExpressionNode(ExpressionNode* base, std::string member_name) : base(base), member_name(member_name) {}
+  MemberAccessExpressionNode(ExpressionNode* base, std::string member_name) : base(base), member_name(std::move(member_name)) {}
 };
 
 // pow
@@ -160,14 +159,14 @@ public:
   ExpressionNode* base;
   ExpressionNode* exponent;
   PowExpressionNode(ExpressionNode* base, ExpressionNode* exponent) : base(base), exponent(exponent) {}
-}
+};
 
 // unary expressions
 
 enum class UnaryExpressionType {
   NEGATION,
   BITWISE_INVERT,
-  INVERT,
+  INVERT
 };
 
 class UnaryExpressionNode : public ExpressionNode {
@@ -225,13 +224,6 @@ public:
   ExpressionNode* if_expression;
   ExpressionNode* else_expression;
   TernaryExpressionNode(ExpressionNode* condition, ExpressionNode* if_expression, ExpressionNode* else_expression) : condition(condition), if_expression(if_expression), else_expression(else_expression) {}
-};
-
-class CommaExpressionNode : public ExpressionNode {
-public:
-  ExpressionNode* left;
-  ExpressionNode* right;
-  CommaExpressionNode(ExpressionNode* left, ExpressionNode* right) : left(left), right(right) {}
 };
 
 #endif
