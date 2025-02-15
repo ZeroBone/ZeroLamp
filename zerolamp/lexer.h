@@ -2,8 +2,8 @@
 #define ZB_LEXER_H
 
 #include <sstream>
-#include <variant>
 #include "token.h"
+#include "result.h"
 
 class LexerError {
 public:
@@ -16,16 +16,22 @@ public:
 class Lexer {
 
 private:
-  std::istringstream stream;
+  std::string input;
+  size_t current_position = 0;
+  bool peeking;
 
 public:
-  Lexer(std::istringstream stream) : stream(std::move(stream)) {}
-  Lexer(const std::string& input) : stream(input) {}
+  Lexer(const std::string& input) : input(input) {}
 
-  std::variant<Token, LexerError> lex();
+  // ZBResult<Token, LexerError> lex();
 
 private:
-  char32_t read_char();
+  enum class ReadCharError {
+    REACHED_END,
+    INVALID_ENCODING
+  };
+
+  ZBResult<char32_t, ReadCharError> read_char();
 
 };
 

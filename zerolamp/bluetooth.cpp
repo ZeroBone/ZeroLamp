@@ -1,3 +1,4 @@
+#include <string>
 #include "bluetooth.h"
 #include "program_controller.h"
 
@@ -19,6 +20,8 @@ void bluetooth_init() {
 
 }
 
+std::vector<uint8_t> incoming_bytes;
+
 void bluetooth_tick() {
 
   if (!SerialBT.available()) {
@@ -27,29 +30,33 @@ void bluetooth_tick() {
 
   int read_iterations = 0;
   bool reached_end = false;
-  std::ostringstream bt_stream;
 
   do {
 
-    char c = SerialBT.read();
+    uint8_t byte = SerialBT.read();
     read_iterations++;
 
-    if (c == '\r') {
+    if (byte == '\r') {
       continue;
     }
 
-    if (c == '\n') {
+    if (byte == '\n') {
       reached_end = true;
       break;
     }
-    
-    bt_stream.put(c);
+
+    incoming_bytes.emplace_back(byte);
     
   } while (SerialBT.available() && read_iterations < MAX_READ_ITERATIONS_PER_TICK);
 
   if (reached_end) {
-    std::string bt_message = bt_stream.str();
-    program_controller_handle_command(std::move(bt_message));
+
+    std::string incoming_string(incoming_bytes.begin(), incoming_bytes.end());
+
+    incoming_bytes.clear();
+
+    program_controller_handle_command(std::move(incoming_string));
+
   }
 
 }
