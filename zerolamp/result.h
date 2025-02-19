@@ -15,8 +15,14 @@ public:
     new (&payload.err_value) E(err);
   }
 
-  bool ok() const {
+  ZBResult() : ZBResult(E()) {}
+
+  inline bool is_ok() const {
     return payload_type == PayloadType::Ok;
+  }
+
+  inline bool is_error() const {
+    return !is_ok();
   }
 
   T& unwrap() {
@@ -24,7 +30,7 @@ public:
     return payload.ok_value;
   }
 
-  T& get_error() {
+  E& unwrap_error() {
     assert(payload_type == PayloadType::Err);
     return payload.err_value;
   }
